@@ -1,0 +1,23 @@
+.Estagio {
+    display: flex;
+    position: relative;
+    margin-top: 6.5rem;
+    justify-content: flex-start; /* Alinha os itens horizontalmente à esquerda */
+}
+
+.Menu {
+    margin-right: 25rem;
+    position: relative;
+}
+
+.Title {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin-left: 8rem;
+    margin-top: 3.5rem;
+    margin-bottom: 5rem; /* Adiciona distância abaixo do título */
+}
+
+.Caixa {
+    justify-content: center;
+}
+

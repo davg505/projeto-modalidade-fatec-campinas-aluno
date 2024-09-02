@@ -1,0 +1,16 @@
+.Inicial {
+    display: flex;
+    position: relative;
+    margin-top: 6.5rem;
+     justify-content: flex-start; /* Alinha os itens horizontalmente à esquerda */
+}
+
+
+.Menu{
+    margin-right: 25rem;
+    position: relative;
+}
+
+.Title {
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
