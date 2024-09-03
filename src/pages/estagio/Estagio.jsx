@@ -1,4 +1,4 @@
-import { CaixaBotao, MenuRetravel } from '../../componetes'
+import { MenuRetravel, MenuRetravelModalidade, TabelaAluno } from '../../componetes'
 import style from './Estagio.module.css'
 
 export const Estagio = () => {
@@ -7,10 +7,12 @@ export const Estagio = () => {
             <div className={style.Menu}>
                 <MenuRetravel />
             </div>
-
+            <div className={style.MenuEstagio}>
+                <MenuRetravelModalidade />
+            </div>
             <div className={style.Caixa}>
-                <h1 className={style.Title}>Área Aluno</h1>
-                <CaixaBotao className={style.Caixa2} />
+                <h1 className={style.Title}>Área Aluno: Modalidade Estágio</h1>
+                <TabelaAluno/>
             </div>
         </div>
     )

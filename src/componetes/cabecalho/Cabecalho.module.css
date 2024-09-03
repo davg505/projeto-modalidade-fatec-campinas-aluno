@@ -7,6 +7,7 @@
     align-items: center;
     justify-content: space-between;
     position: fixed;
+    height: 80px;
     flex-wrap: wrap; /* Itens vão quebrar de linha se necessário */
 }
 

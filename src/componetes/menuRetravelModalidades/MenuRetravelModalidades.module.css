@@ -2,9 +2,9 @@
     position: 'relative'; 
 }
 
-.Trapezioinvertido {
+.Trapezio {
     position: relative;
-    width: 385px;
+    width: 375px;
     height: 50px;
     background-color: #3498db;
     color: white;
@@ -15,22 +15,23 @@
     line-height: 50px; /* Alinha o texto verticalmente */
     cursor: pointer;
     outline: none;
-    clip-path: polygon(0% 0%, 100% 0%, 80% 100%, 20% 100%);
+    clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
     transition: background-color 0.3s ease;
 }
 
 
 .Menu{
     position: relative;
-    width: 385px;
-    height: 450px;
+    width: 375px;
+    height: 775px;
     top: 20px;
     right: 0;
     background-color: var(--cinza);
     color: var(--preto);
     box-Shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
+    left: 8rem;
 }
 
 .Menu h1{
@@ -40,7 +41,7 @@
 .menu-icones {
     display: flex;
     flex-wrap: wrap; /* Permite que os ícones quebrem a linha se necessário */
-    gap: 30px; /* Espaçamento entre os ícones */
+    gap: 20px; /* Espaçamento entre os ícones */
     justify-content: center; /* Alinha os ícones à esquerda */
     margin-top: 40px;
 }
@@ -49,5 +50,3 @@
     flex: 0 1 auto; /* Define o tamanho mínimo de cada ícone */
     text-align: center; /* Centraliza o conteúdo de cada ícone */
 }
-
-
