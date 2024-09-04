@@ -1,4 +1,4 @@
-import { MenuRetravel, TabelaAluno } from '../../componetes';
+import { MenuRetravel } from '../../componetes';
 import style from './Inicial.module.css';
 
 export const Inicial = () => {
@@ -9,7 +9,6 @@ export const Inicial = () => {
             </div>
             <div className={style.Title}>
                 <h1>Área Aluno</h1>
-                <TabelaAluno/>
             </div>
         </div>
     );

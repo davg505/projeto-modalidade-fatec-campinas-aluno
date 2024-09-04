@@ -10,13 +10,13 @@ export const MenuRetravel = () => {
     const {  iconesAluno } = UseAppContext();
 
       // Seleciona dois ícones para "Minha área"
-      const iconesMinhaArea = iconesAluno.filter(item => item.id === 4 || item.id === 5);
+    const iconesMinhaArea = iconesAluno.filter(item => item.id === 4 || item.id === 5);
 
       // Seleciona três ícones para "Modalidades"
-      const iconesModalidades = iconesAluno.filter(item => item.id === 1 || item.id === 2 || item.id === 3 );
-      
+    const iconesModalidades = iconesAluno.filter(item => item.id === 1 || item.id === 2 || item.id === 3 );
+    
       // Seleciona três ícones para "Modalidades"
-      const iconesTutoria = iconesAluno.filter(item => item.id === 6);
+    const iconesTutoria = iconesAluno.filter(item => item.id === 6);
 
     const toggleMenu = () => {
         setShowMenu(!showMenu);
@@ -54,6 +54,7 @@ export const MenuRetravel = () => {
                                 id={item.id}
                                 sigla={item.sigla}
                                 nome={item.nome}
+                                link={item.link}
                             />
                         ))}
                     </div>

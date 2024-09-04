@@ -22,3 +22,8 @@
 .Icone:hover {
     background-color: #2e88c4; /* Cor ao passar o mouse */
   }
+
+  .IconeLink {
+    text-decoration: none;
+    color: inherit; /* Para manter a cor do texto do botão */
+  }

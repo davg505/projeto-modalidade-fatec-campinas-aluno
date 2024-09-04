@@ -1,7 +1,19 @@
+import { UseAppContext } from "../../hooks";
 import style from './TabelaAluno.module.css';
 
-export const TabelaAluno = () => (
-  <>
+export const TabelaAluno = () => {
+
+  const { tabelaAluno } = UseAppContext();
+
+  const nomeAluno = tabelaAluno.filter(item => item.id === 1);
+  const email = tabelaAluno.filter(item => item.id === 2);
+  const ra = tabelaAluno.filter(item => item.id === 3);
+  const curso = tabelaAluno.filter(item => item.id === 4);
+  const status = tabelaAluno.filter(item => item.id === 5);
+  const modalidade = tabelaAluno.filter(item => item.id === 6);
+
+  return (
+    <>
     <header  className={style.tabelaAluno}>
       <h2>Aluno</h2>
     </header>
@@ -9,25 +21,26 @@ export const TabelaAluno = () => (
       <table className={style.table}>
         <thead>
           <tr>
-            <th className={style.th}>Nome do aluno</th>
-            <th className={style.th}>Email</th>
-            <th className={style.th}>Ra</th>
-            <th className={style.th}>Curso</th>
-            <th className={style.th}>Status</th>
-            <th className={style.th}>Modalidade</th>
+            <th className={style.th}>{nomeAluno.map(item => item.nomeColuna)}</th>
+            <th className={style.th}>{email.map(item => item.nomeColuna)}</th>
+            <th className={style.th}>{ra.map(item => item.nomeColuna)}</th>
+            <th className={style.th}>{curso.map(item => item.nomeColuna)}</th>
+            <th className={style.th}>{status.map(item => item.nomeColuna)}</th>
+            <th className={style.th}>{modalidade.map(item => item.nomeColuna)}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td className={style.td}>Aluno</td>
-            <td className={style.td}>aluno@fatec.br</td>
-            <td className={style.td}>1000016816561</td>
-            <td className={style.td}>GTI</td>
-            <td className={style.td}>Sem solicitação</td>
-            <td className={style.td}>Sem definição</td>
+            <td className={style.td}> {nomeAluno.map(item => item.dadoColuna)} </td>
+            <td className={style.td}> {email.map(item => item.dadoColuna)} </td>
+            <td className={style.td}> {ra.map(item => item.dadoColuna)} </td>
+            <td className={style.td}> {curso.map(item => item.dadoColuna)} </td>
+            <td className={style.td}> {status.map(item => item.dadoColuna)} </td>
+            <td className={style.td}> {modalidade.map(item => item.dadoColuna)} </td>
           </tr>
         </tbody>
       </table>
     </div>
   </>
-);
+  );
+};
