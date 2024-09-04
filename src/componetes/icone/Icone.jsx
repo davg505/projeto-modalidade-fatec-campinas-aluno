@@ -1,4 +1,5 @@
 
+import { Link } from 'react-router-dom';
 import style from './Icone.module.css';
 
 export const Icone = (props) => {
@@ -7,12 +8,13 @@ export const Icone = (props) => {
 
     return(
         <div>
-        <a href={link} className={style.IconeLink}>
+        <Link to={link} className={style.IconeLink}>
         <button className={style.Icone}>
         {sigla}
         </button>
-        </a>
+        </Link>
         <i className={style.IconeNome}>{nome}</i>
         </div>
     );
 };
+

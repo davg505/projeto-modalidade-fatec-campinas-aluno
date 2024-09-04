@@ -6,7 +6,7 @@ export const AppContext = createContext({});
 export const AppContextProvider = (props) => {
     const { children } = props;
     const [iconesAluno, setIconesAluno] = useState([
-        { id: 1, sigla: 'E', nome:'Estagio', link: '/projeto-modalidade-fatec-campinas-aluno/estagio' },
+        { id: 1, sigla: 'E', nome:'Estagio', link: '/estagio' },
         { id: 2, sigla: 'IC', nome:'Iniciação Cientifica', link: '/estagio' },
         { id: 3, sigla: 'EP', nome:'Equivalencia Profissional' , link: '/estagio'},
         { id: 4, sigla: 'MA', nome:'Meus Avisos', link: '/estagio' },
