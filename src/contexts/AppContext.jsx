@@ -36,11 +36,31 @@ export const AppContextProvider = (props) => {
         { id: 5, nomeColuna:'Status',  dadoColuna:'Sem solicitação' },
         { id: 6, nomeColuna:'Modalidade',  dadoColuna:'Sem definição' },  
     ]);
+
+    const [tabelaEstagio, setTabelaEstagio] = useState([
+        { id: 1, nomeColuna:'Status', dadoColuna:'Não solicitado' },
+        { id: 2, nomeColuna:'Tipo de estágio',  dadoColuna:'Solicitado Obrigatório'},
+        { id: 3, nomeColuna:'Modelo',  dadoColuna:'Remunerado' },
+        { id: 4, nomeColuna:'Solicitação',  dadoColuna:'Não realizado' },
+        { id: 5, nomeColuna:'Data da Solicitação',  dadoColuna:'2024-12-15' },
+        { id: 6, nomeColuna:'Status do Termo',  dadoColuna:'Não enviado' },
+        { id: 7, nomeColuna:'Prorrogação de período',  dadoColuna:'Não enviado' },
+        { id: 8, nomeColuna:'Estágio não Obrigatório para Obrigatório',  dadoColuna:'Não enviado' },
+        { id: 9, nomeColuna:'Rescisão do termo',  dadoColuna:'Não enviado' },
+        { id: 10, nomeColuna:'Relatório de estágio supervisionado',  dadoColuna:'Não enviado' },
+        { id: 11, nomeColuna:'Ficha de avaliação do superior imediato',  dadoColuna:'Não enviado' },
+
+    ]);
+
+
+
+
     return (
         <AppContext.Provider
             value={{iconesAluno,
                     iconesEstagio,
                     tabelaAluno,
+                    tabelaEstagio,
                 }}
         >
             {children}

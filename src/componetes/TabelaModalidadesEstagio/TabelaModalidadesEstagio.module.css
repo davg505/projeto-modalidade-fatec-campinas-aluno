@@ -1,0 +1,32 @@
+.tabelaEstagio {
+    text-align: center;
+    padding: 1rem;
+    color: var(--branco);
+    
+  }
+  
+  .tableContainer {
+    display: flex;
+    justify-content: center;
+    color: var(--branco);
+   
+  }
+  
+  .table {
+    border-collapse: collapse;
+    width: 80%;
+    background-color: var(--cinza);
+  }
+  
+  .th {
+    border: 1px solid var(--branco);
+    text-align: left;
+    padding: 0.5rem;
+  }
+  
+  .td {
+    border: 1px solid var(--branco);
+    text-align: left;
+    padding: 0.5rem;
+  }
+  
