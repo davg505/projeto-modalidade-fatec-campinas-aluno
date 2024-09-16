@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { UseAppContext } from "../../hooks";
 import style from "./SolicitarEstagio.module.css"; // Importe o arquivo CSS
 
 const SolicitarEstagio = ({ show, handleClose, handleSubmit }) => {
@@ -13,8 +14,10 @@ const SolicitarEstagio = ({ show, handleClose, handleSubmit }) => {
   const [estagioTipo, setEstagioTipo] = useState("obrigatorio");
   const [estagioModelo, setEstagioModelo] = useState("Remunerado");
 
+  const { adicionarSolicitacaoEstagio,  editarSolicitacaoEstagio } = UseAppContext();
+
   const onSubmit = () => {
-    handleSubmit({
+    const solicitacao = {
       email,
       name,
       estagioTipo,
@@ -25,8 +28,12 @@ const SolicitarEstagio = ({ show, handleClose, handleSubmit }) => {
       local,
       superior,
       tel,
-    });
-    handleClose();
+    };
+  
+    adicionarSolicitacaoEstagio(solicitacao); // Chama a função para enviar a solicitação
+    editarSolicitacaoEstagio(solicitacao); // Chama a função para enviar a solicitação
+    handleSubmit(solicitacao); // Se ainda precisar dessa função
+    handleClose(); // Fecha o modal após o envio
   };
 
   if (!show) return null;
@@ -135,7 +142,7 @@ const SolicitarEstagio = ({ show, handleClose, handleSubmit }) => {
         </div>
 
         <div className={style.labelContainer}>
-          <label>Supervisor:</label>
+          <label>Supervisor (Empresa):</label>
           <input
             className={style.input}
             type="text"
@@ -145,7 +152,7 @@ const SolicitarEstagio = ({ show, handleClose, handleSubmit }) => {
         </div>
 
         <div className={style.labelContainer}>
-          <label>Email:</label>
+          <label>Email (Empresa) :</label>
           <input
             className={style.input}
             type="email"
@@ -155,7 +162,7 @@ const SolicitarEstagio = ({ show, handleClose, handleSubmit }) => {
         </div>
 
         <div className={style.labelContainer}>
-          <label>Telefone:</label>
+          <label>Telefone (Empresa):</label>
           <input
             className={style.input}
             type="tel"
