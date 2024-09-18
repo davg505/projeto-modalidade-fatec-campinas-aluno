@@ -36,6 +36,22 @@ export const AppContextProvider = (props) => {
         { id: 9, sigla: 'FE', nome:'Finalização do Estágio' },
     
     ]);
+
+
+    // Enviar dados para TERMO DE COMPROMISSO PARA A REALIZAÇÃO DE ESTÁGIO SUPERVISIONADO NÃO OBRIGATÓRIO (REMUNERADO)
+    const enviarDadosTermoNOR = async () => {
+        try {
+          const { data: alunoData } = await Api.get('/aluno');
+          if (!alunoData || alunoData.length === 0) {
+            throw new Error('Nenhum aluno encontrado');
+          }
+          const aluno = alunoData[0]; // Supondo que você quer pegar o primeiro aluno
+          return aluno;
+        } catch (error) {
+          console.error('Erro ao buscar dados do aluno:', error);
+          return null;
+        }
+      };
     
     // Editar Solicitacao Estagio
     const editarSolicitacaoEstagio = async (solicitacao) => {
@@ -116,6 +132,7 @@ export const AppContextProvider = (props) => {
         }
     };
 
+    // Carrega tabela aluno da pagina estagio 
     const carregarTabelaAluno = async () => {
         try {
             const { data } = await Api.get('/aluno'); // Buscando os dados da API
@@ -191,10 +208,37 @@ export const AppContextProvider = (props) => {
         } catch (error) {
             console.error('Erro ao enviar solicitação:', error);
         }
-
-
-
     };
+
+    const carregarDadosEstagioDoTermo = async () => {
+
+        const { data: alunoData } = await Api.get('/aluno'); 
+        if (!alunoData || alunoData.length === 0) {
+            throw new Error('Nenhum aluno encontrado');
+        }
+        const aluno = alunoData[0];
+
+        const { data: estagioData } = await Api.get('/estagio'); 
+        if (!estagioData || estagioData.length === 0) {
+            throw new Error('Nenhum estágio encontrado');
+        }
+        const estagio = estagioData[0];
+
+        try {
+            //Termo de Compromisso de Estágio não Obrigatório Remunerado
+            if(estagio.TipoDeEstagio === "naoObrigatorio" && estagio.modelo === "remunerado") {
+                return "Termo de Compromisso de Estágio não Obrigatório Remunerado";
+            } else{
+                return "Sem Solicitação";
+            }
+
+        }catch (error) {
+            console.error('Erro ao carregar dados do estagio:', error);
+        }
+    };
+
+
+
 
     
     return (
@@ -208,6 +252,8 @@ export const AppContextProvider = (props) => {
                     carregarDadosEstagio,
                     editarSolicitacaoEstagio,
                     cancelarSolicitacaoEstagio,
+                    carregarDadosEstagioDoTermo,
+                    enviarDadosTermoNOR,
                 }}
         >
             {children}

@@ -108,7 +108,7 @@ export const MenuRetravelModalidade = () => {
         }
     };
 
-   
+
 
     return (
         <div className={style.MenuRetravel}>

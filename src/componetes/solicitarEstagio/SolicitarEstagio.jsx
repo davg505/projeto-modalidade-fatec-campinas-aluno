@@ -3,14 +3,8 @@ import { UseAppContext } from "../../hooks";
 import style from "./SolicitarEstagio.module.css"; // Importe o arquivo CSS
 
 const SolicitarEstagio = ({ show, handleClose, handleSubmit }) => {
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
   const [dataIncial, setDataIncial] = useState("");
   const [dataFinal, setDataFinal] = useState("");
-  const [cnpj, setCnpj] = useState("");
-  const [local, setLocal] = useState("");
-  const [superior, setSupervisor] = useState("");
-  const [tel, setTel] = useState("");
   const [estagioTipo, setEstagioTipo] = useState("obrigatorio");
   const [estagioModelo, setEstagioModelo] = useState("Remunerado");
 
@@ -18,16 +12,10 @@ const SolicitarEstagio = ({ show, handleClose, handleSubmit }) => {
 
   const onSubmit = () => {
     const solicitacao = {
-      email,
-      name,
       estagioTipo,
       estagioModelo,
       dataIncial,
       dataFinal,
-      cnpj,
-      local,
-      superior,
-      tel,
     };
   
     adicionarSolicitacaoEstagio(solicitacao); // Chama a função para enviar a solicitação
@@ -110,67 +98,6 @@ const SolicitarEstagio = ({ show, handleClose, handleSubmit }) => {
             onChange={(e) => setDataFinal(e.target.value)}
           />
         </div>
-
-        <div className={style.labelContainer}>
-          <label>Empresa:</label>
-          <input
-            className={style.input}
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-
-        <div className={style.labelContainer}>
-          <label>CNPJ:</label>
-          <input
-            className={style.input}
-            type="text"
-            value={cnpj}
-            onChange={(e) => setCnpj(e.target.value)}
-          />
-        </div>
-
-        <div className={style.labelContainer}>
-          <label>Local do Estágio (município):</label>
-          <input
-            className={style.input}
-            type="text"
-            value={local}
-            onChange={(e) => setLocal(e.target.value)}
-          />
-        </div>
-
-        <div className={style.labelContainer}>
-          <label>Supervisor (Empresa):</label>
-          <input
-            className={style.input}
-            type="text"
-            value={superior}
-            onChange={(e) => setSupervisor(e.target.value)}
-          />
-        </div>
-
-        <div className={style.labelContainer}>
-          <label>Email (Empresa) :</label>
-          <input
-            className={style.input}
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-
-        <div className={style.labelContainer}>
-          <label>Telefone (Empresa):</label>
-          <input
-            className={style.input}
-            type="tel"
-            value={tel}
-            onChange={(e) => setTel(e.target.value)}
-          />
-        </div>
-
         <div className={style.buttonsContainer}>
           <button className={style.button} onClick={onSubmit}>
             Enviar

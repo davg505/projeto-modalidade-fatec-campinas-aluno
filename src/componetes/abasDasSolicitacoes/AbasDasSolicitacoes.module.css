@@ -1,0 +1,57 @@
+.AbasContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: var(--verdeFatec);
+}
+
+.Aba {
+    background-color: grey;
+    color: white;
+    padding: 10px 20px;
+    margin-right: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5rem;
+    margin-bottom: 8px;
+    width: 500px;
+    text-align: center;
+}
+
+.AbaAtiva {
+    background-color: grey;
+    color: white;
+    padding: 10px 20px;
+    margin-right: 10rem;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5rem;
+    margin-bottom: 8px;
+    width: 500px;
+    text-align: center;
+}
+
+.Aba:hover {
+    background-color: #555;
+}
+
+.Title2 {
+    font-size: 18px;
+    margin-bottom: 1px;
+    color: white;
+}
+
+
+.button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6rem;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #2e88c4;
+  }
+  
