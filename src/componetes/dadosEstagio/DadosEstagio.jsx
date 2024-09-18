@@ -10,7 +10,7 @@ export const DadosEstagio = ({ show, handleClose, handleSubmit }) => {
     const [saida, setSaida] = useState("");
     const [refeicao, setRefeicao] = useState("");
 
-    const {  } = UseAppContext();
+    const { adicionarDadosEstagioAluno } = UseAppContext();
 
     const onSubmit = () => {
     const dadosEmpresaEstagio = {
@@ -21,8 +21,9 @@ export const DadosEstagio = ({ show, handleClose, handleSubmit }) => {
         refeicao,
     };
     
-      handleSubmit(dadosEmpresaEstagio); // Se ainda precisar dessa função
-      handleClose(); // Fecha o modal após o envio
+    adicionarDadosEstagioAluno(dadosEmpresaEstagio);
+    handleSubmit(dadosEmpresaEstagio);
+    handleClose();
     };
 
     if (!show) return null;
@@ -109,5 +110,4 @@ export const DadosEstagio = ({ show, handleClose, handleSubmit }) => {
 
     );
 
-
-}
+    };

@@ -16,10 +16,41 @@ export const DadosEmpresa = ({ show, handleClose, handleSubmit }) => {
     const [tel, setTel] = useState("");
 
   
-    const {  } = UseAppContext();
-  
+    const { adicionarDadosEmpresa } = UseAppContext();
+
+
+        // Função para formatar CPF e CNPJ
+        const formatarDocumento = (valor, tipo) => {
+            let v = valor.replace(/\D/g, ""); // Remove qualquer caractere não numérico
+
+            if (tipo === "cpf") {
+            // Formatar CPF (000.000.000-00)
+            v = v.replace(/(\d{3})(\d)/, "$1.$2");
+            v = v.replace(/(\d{3})(\d)/, "$1.$2");
+            v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+            } else if (tipo === "cnpj") {
+            // Formatar CNPJ (00.000.000/0000-00)
+            v = v.replace(/^(\d{2})(\d)/, "$1.$2");
+            v = v.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
+            v = v.replace(/\.(\d{3})(\d)/, ".$1/$2");
+            v = v.replace(/(\d{4})(\d)/, "$1-$2");
+            }
+
+            return v;
+        };
+
+        const handleCpfChange = (e) => {
+            const formattedCpf = formatarDocumento(e.target.value, "cpf");
+            setCpf(formattedCpf);
+        };
+
+        const handleCnpjChange = (e) => {
+            const formattedCnpj = formatarDocumento(e.target.value, "cnpj");
+            setCnpj(formattedCnpj);
+        };
+
     const onSubmit = () => {
-      const dadosEmpresaEstagio = {
+        const dadosEmpresaEstagio = {
         email,
         name,
         cnpj,
@@ -30,12 +61,13 @@ export const DadosEmpresa = ({ show, handleClose, handleSubmit }) => {
         cargo,
         cpf,
         tel,
-      };
+        };
     
+      adicionarDadosEmpresa (dadosEmpresaEstagio);
       handleSubmit(dadosEmpresaEstagio); // Se ainda precisar dessa função
       handleClose(); // Fecha o modal após o envio
     };
-  
+
     if (!show) return null;
 
 
@@ -56,14 +88,16 @@ export const DadosEmpresa = ({ show, handleClose, handleSubmit }) => {
         </div>
 
         <div className={style.labelContainer}>
-            <label>CNPJ:</label>
-            <input
+        <label>CNPJ:</label>
+        <input
             className={style.input}
             type="text"
             value={cnpj}
-            onChange={(e) => setCnpj(e.target.value)}
-            />
+            onChange={handleCnpjChange}
+            maxLength="18" // Limita o input ao tamanho máximo de um CNPJ
+        />
         </div>
+
     
         <div className={style.labelContainer}>
             <label>Município:</label>
@@ -118,12 +152,13 @@ export const DadosEmpresa = ({ show, handleClose, handleSubmit }) => {
         <div className={style.labelContainer}>
             <label>CPF (Supervisor):</label>
             <input
-            className={style.input}
-            type="text"
-            value={cpf}
-            onChange={(e) => setCpf(e.target.value)}
+                className={style.input}
+                type="text"
+                value={cpf}
+                onChange={handleCpfChange}
+                maxLength="14" // Limita o input ao tamanho máximo de um CPF
             />
-        </div>
+            </div>
 
         <div className={style.labelContainer}>
             <label>Email (Empresa) :</label>
@@ -159,4 +194,4 @@ export const DadosEmpresa = ({ show, handleClose, handleSubmit }) => {
     );
 
 
-}
+} 

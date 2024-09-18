@@ -38,6 +38,56 @@ export const AppContextProvider = (props) => {
     ]);
 
 
+       // Entrada dos dados da empresa. 
+        const adicionarDadosEmpresa = async (dadosEmpresaEstagio) => {
+
+        const { data: alunoData } = await Api.get('/aluno'); 
+        if (!alunoData || alunoData.length === 0) {
+            throw new Error('Nenhum aluno encontrado');
+        }
+        const aluno = alunoData[0];
+
+        try {
+            const novaDadosEmpresa = {
+                ...dadosEmpresaEstagio,
+                alunoId:aluno.id,
+                id: Date.now,
+            };
+            const response = await Api.post('/entradaEmpresaAluno', novaDadosEmpresa);
+        
+            console.log('Solicitação enviada com sucesso:', response.data);
+        } catch (error) {
+            console.error('Erro ao enviar solicitação:', error);
+        }
+    };
+
+    
+       // Entrada dos dados da empresa. 
+       const adicionarDadosEstagioAluno = async (dadosEstagioAluno) => {
+
+        const { data: alunoData } = await Api.get('/aluno'); 
+        if (!alunoData || alunoData.length === 0) {
+            throw new Error('Nenhum aluno encontrado');
+        }
+        const aluno = alunoData[0];
+
+        try {
+            const novaDadosEmpresa = {
+                ...dadosEstagioAluno,
+                alunoId:aluno.id,
+                id: Date.now,
+            };
+            const response = await Api.post('/entradaDadosEstagioAluno', novaDadosEmpresa);
+        
+            console.log('Solicitação enviada com sucesso:', response.data);
+        } catch (error) {
+            console.error('Erro ao enviar solicitação:', error);
+        }
+    };
+
+  
+
+
     // Enviar dados para TERMO DE COMPROMISSO PARA A REALIZAÇÃO DE ESTÁGIO SUPERVISIONADO NÃO OBRIGATÓRIO (REMUNERADO)
     const enviarDadosTermoNOR = async () => {
         try {
@@ -254,6 +304,8 @@ export const AppContextProvider = (props) => {
                     cancelarSolicitacaoEstagio,
                     carregarDadosEstagioDoTermo,
                     enviarDadosTermoNOR,
+                    adicionarDadosEmpresa,
+                    adicionarDadosEstagioAluno,
                 }}
         >
             {children}
