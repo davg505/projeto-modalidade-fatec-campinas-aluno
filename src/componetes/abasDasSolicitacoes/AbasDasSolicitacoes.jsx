@@ -6,15 +6,15 @@ import style from './AbasDasSolicitacoes.module.css';
 
 export const AbasDasSolicitacoes = () => {
     const [abaAtiva, setAbaAtiva] = useState(null);
-    const [showDadosEmpresa, setShowDadosEmpresa] = useState(false); // Estado para controlar a exibição da janela
-    const [showDadosEstagio, setShowDadosEstagio] = useState(false); // Estado para controlar a exibição da janela
+    const [showDadosEmpresa, setShowDadosEmpresa] = useState(false); 
+    const [showDadosEstagio, setShowDadosEstagio] = useState(false);
+    const [empresaPreenchida, setEmpresaPreenchida] = useState(false); // Novo estado para controlar se os dados da empresa foram preenchidos
+    const [estagioPreenchido, setEstagioPreenchido] = useState(false); // Novo estado para controlar se os dados do estágio foram preenchidos
 
     const handleAbaClick = (aba) => {
         if (abaAtiva === aba) {
-            // Se a aba clicada for a mesma que a aba ativa, desativa a aba
             setAbaAtiva(null);
         } else {
-            // Caso contrário, ativa a aba clicada
             setAbaAtiva(aba);
         }
     };
@@ -24,12 +24,13 @@ export const AbasDasSolicitacoes = () => {
     };
 
     const handleCloseDadosEmpresa = () => {
-        setShowDadosEmpresa(false); // Fecha a janela
+        setShowDadosEmpresa(false); 
     };
 
     const handleSubmitDadosEmpresa = (data) => {
         console.log("Dados do empresa enviados:", data);
-        setShowDadosEmpresa(false); // Fecha a janela após o envio
+        setShowDadosEmpresa(false);
+        setEmpresaPreenchida(true); // Marca como preenchido
     };
 
     const handleOpenDadosEstagio = () => {
@@ -37,33 +38,39 @@ export const AbasDasSolicitacoes = () => {
     };
 
     const handleCloseDadosEstagio = () => {
-        setShowDadosEstagio(false); // Fecha a janela
+        setShowDadosEstagio(false); 
     };
 
     const handleSubmitDadosEstagio = (data) => {
-        console.log("Dados do empresa enviados:", data);
-        setShowDadosEstagio(false); // Fecha a janela após o envio
+        console.log("Dados do estágio enviados:", data);
+        setShowDadosEstagio(false); 
+        setEstagioPreenchido(true); // Marca como preenchido
     };
 
     return (
         <div className={style.AbasContainer}>
             <div className={abaAtiva === 'Pedidos de solicitações' ? style.AbaAtiva : style.Aba} onClick={() => handleAbaClick('Pedidos de solicitações')}>
-            <h2>Dados - Documentação</h2>
+                <h2>Dados - Documentação</h2>
             </div>
             {abaAtiva === 'Pedidos de solicitações' && (
                 <div>
                     <h3 className={style.Title2}>Preencher dados empresa:</h3>
-                    <button className={style.button}  onClick={handleOpenDadosEmpresa}>Adicionar</button>
+                    <button className={style.button} onClick={handleOpenDadosEmpresa}>Adicionar</button>
                     <h3 className={style.Title2}>Preencher dados estagio:</h3>
                     <button className={style.button} onClick={handleOpenDadosEstagio}>Adicionar</button>
-                    <h3 className={style.Title2}>Preencher termo automático:</h3>
-                    <GerarPDF/>
-                    <h3 className={style.Title2}>Download termo para assinar:</h3>
-                    <button className={style.button}>Download termo </button>
-                    <h3 className={style.Title2}>Enviar para análise:</h3>
-                    <button className={style.button}>Enviar termos prontos </button>
-                    <h3 className={style.Title2}>Cancelar termo ou envio:</h3>
-                    <button className={style.button}>Cancelar envio</button>
+                    
+                    {/* Exibe o GerarPDF apenas se ambos os dados forem preenchidos */}
+                    {empresaPreenchida && estagioPreenchido && (
+                        <>
+                            <h3 className={style.Title2}>Preencher termo automático:</h3>
+                            <GerarPDF />
+                            <h3 className={style.Title2}>Enviar para análise:</h3>
+                            <button className={style.button}>Enviar termos prontos</button>
+                            <h3 className={style.Title2}>Cancelar termo ou envio:</h3>
+                            <button className={style.button}>Cancelar envio</button>
+                        </>
+                    )}
+                    
                 </div>
             )}
             <DadosEmpresa

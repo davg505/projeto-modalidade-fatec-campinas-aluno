@@ -1,4 +1,3 @@
-
 import jsPDF from "jspdf";
 import { useEffect, useState } from "react";
 import { UseAppContext } from "../../hooks";
@@ -6,19 +5,46 @@ import style from './GerarPDF.module.css';
 
 const GerarPDF = () => {
   const [dadosEstagio, setDadosEstagio] = useState(null);
-  const { enviarDadosTermoNOR } = UseAppContext();
+  const [loading, setLoading] = useState(true); // Estado de carregamento
+  const [error, setError] = useState(null); // Estado de erro
+  const { enviarDadosTermoNOR } = UseAppContext(); // Função do contexto para buscar dados
+  const [retryCount, setRetryCount] = useState(0); // Tentativas de repetição
 
-  // Função para buscar os dados do aluno (ou termo de compromisso)
-  useEffect(() => {
-    const fetchDadosEstagio = async () => {
-      const aluno = await enviarDadosTermoNOR();
-      if (aluno) {
-        setDadosEstagio(aluno);
+  const MAX_RETRIES = 3; // Número máximo de tentativas
+
+  const dataAtual = new Date();
+
+  // Função para buscar os dados com re-tentativa
+  const fetchDadosEstagio = async () => {
+    setLoading(true); // Começa carregamento
+    setError(null); // Limpa qualquer erro anterior
+
+    try {
+      const dados = await enviarDadosTermoNOR();
+      if (dados) {
+        setDadosEstagio(dados);
+        setLoading(false); // Finaliza o carregamento quando os dados são carregados
+      } else {
+        throw new Error('Dados não encontrados.');
       }
-    };
+    } catch (err) {
+      console.error('Erro ao carregar os dados:', err);
+      if (retryCount < MAX_RETRIES) {
+        setRetryCount(retryCount + 1); // Incrementa o contador de tentativas
+        console.log(`Tentando novamente... (${retryCount + 1}/${MAX_RETRIES})`);
+      } else {
+        setError('Falha ao carregar os dados após várias tentativas.');
+        setLoading(false); // Finaliza o carregamento mesmo com erro
+      }
+    }
+  };
 
-    fetchDadosEstagio();
-  }, []);
+  // useEffect para buscar os dados na montagem do componente
+  useEffect(() => {
+    if (retryCount <= MAX_RETRIES) {
+      fetchDadosEstagio();
+    }
+  }, [retryCount]);
 
   const gerarPDF = () => {
     if (!dadosEstagio) {
@@ -27,9 +53,7 @@ const GerarPDF = () => {
     }
 
     // Criar uma instância de jsPDF no formato A4
-    const doc = new jsPDF({
-  
-    });
+    const doc = new jsPDF();
 
     // Definir margens
     const alturaPagina = 290;
@@ -43,20 +67,18 @@ const GerarPDF = () => {
     doc.text("ANEXO A – Termo de Compromisso de Estágio não Obrigatório Remunerado", margemEsquerda, margemSuperior);
     doc.setFontSize(10);
 
-const texto1 = "ATENÇÃO: Rubricar todas as páginas e assinar na última. As assinaturas deverão constar em folha que tenha, pelo menos uma cláusula do Termo de Compromisso de Estágio (a última página não deverá conter somente as assinaturas). Providenciar 03 (três) vias em papel timbrado pela empresa, uma para a empresa, outra para a Instituição de Ensino e outra para o aluno.";
+    const texto1 = "ATENÇÃO: Rubricar todas as páginas e assinar na última. As assinaturas deverão constar em folha que tenha, pelo menos uma cláusula do Termo de Compromisso de Estágio (a última página não deverá conter somente as assinaturas). Providenciar 03 (três) vias em papel timbrado pela empresa, uma para a empresa, outra para a Instituição de Ensino e outra para o aluno.";
 
-// O jsPDF quebra automaticamente o texto para caber na largura da página
-doc.text(texto1, margemEsquerda, margemSuperior + 10, { maxWidth: larguraPagina });
+    // O jsPDF quebra automaticamente o texto para caber na largura da página
+    doc.text(texto1, margemEsquerda, margemSuperior + 10, { maxWidth: larguraPagina });
 
-    // Texto principal com placeholders preenchidos
     const texto = `
 
-    
-
+  
 
       TERMO DE COMPROMISSO PARA A REALIZAÇÃO DE ESTÁGIO SUPERVISIONADO NÃO OBRIGATÓRIO (REMUNERADO) (Lei nº 11.788/08)
 
-      Pelo presente instrumento, as partes a seguir nomeadas e ao final assinadas, de um lado ${dadosEstagio.nomeConcedente || "_____________________________"} (Concedente), inscrita no CNPJ sob o nº ${dadosEstagio.cnpj}, sita à rua ${dadosEstagio.enderecoConcedente}, doravante denominada CONCEDENTE, neste ato representada por ${dadosEstagio.nomeRepresentante}, portador do CPF ${dadosEstagio.cpfRepresentante}, e de outro lado, o(a) estudante ${dadosEstagio.nomeEstagiario}, RG nº ${dadosEstagio.rgEstagiario}, residente à ${dadosEstagio.enderecoEstagiario}, na cidade de ${dadosEstagio.cidadeEstagiario}, doravante denominado ESTAGIÁRIO (A), aluno (a) regularmente matriculado (a) no Curso Superior de Tecnologia em XXXXXX da Faculdade de Tecnologia de XXX – Fatec XXX, localizada na cidade de XXXX, Estado de São Paulo, doravante denominada INSTITUIÇÃO DE ENSINO, na condição de interveniente, acordam e estabelecem entre si as cláusulas e condições que regerão este TERMO DE COMPROMISSO DE ESTÁGIO NÃO OBRIGATÓRIO REMUNERADO.
+      Pelo presente instrumento, as partes a seguir nomeadas e ao final assinadas, de um lado ${dadosEstagio.nomeEmpresa || "_____________________________"}, inscrita no CNPJ sob o nº ${dadosEstagio.cnpj || "_____________________________"}, sita à rua ${dadosEstagio.endereco || "_____________________________"}, doravante denominada CONCEDENTE, neste ato representada por ${dadosEstagio.superior || "_____________________________"}, portador do CPF ${dadosEstagio.cpf || "_____________________________"}, e de outro lado, o(a) estudante ${dadosEstagio.nomeDoAluno || "_____________________________"}, RG nº ${dadosEstagio.rgAluno || "_____________________________"}, residente à ${dadosEstagio.enderecoAluno || "_____________________________"}  , na cidade de ${dadosEstagio.cidade || "_____________________________"}  , doravante denominado ESTAGIÁRIO (A), aluno (a) regularmente matriculado (a) no Curso Superior de Tecnologia em ${dadosEstagio.curso || "_____________________________"}  da Faculdade de Tecnologia de ${dadosEstagio.cidadeFatec || "_____________________________"}  – Fatec ${dadosEstagio.cidadeFatec || "_____________________________"} , localizada na cidade de ${dadosEstagio.cidadeFatec || "_____________________________"} , Estado de São Paulo, doravante denominada INSTITUIÇÃO DE ENSINO, na condição de interveniente, acordam e estabelecem entre si as cláusulas e condições que regerão este TERMO DE COMPROMISSO DE ESTÁGIO NÃO OBRIGATÓRIO REMUNERADO.
       CLÁUSULA PRIMEIRA. É objeto do presente Termo de Compromisso de Estágio autorizar a realização de estágio nos termos da Lei 11.788/08 de 25/09/2008, com a finalidade de possibilitar ao (à) Estagiário (a) complementação e aperfeiçoamento prático de seu Curso Superior de Tecnologia, celebrado entre a Concedente e a Instituição de Ensino da qual o (a) Estagiário (a) é aluno (a).
       Parágrafo Primeiro. Entende-se por estágio profissional aquele desenvolvido em ambiente real de trabalho, assumido como ato educativo e supervisionado pela instituição de ensino, em regime de parceria com organizações do mundo do trabalho, objetivando efetiva preparação do estudante para o trabalho, conforme o art. 34, § 1º da Resolução CNE/CP Nº 1/2021. 
       Parágrafo Segundo. As atividades de estágio somente poderão ser iniciadas após assinatura do Termo de Compromisso de Estágio pelas partes envolvidas, não sendo reconhecida ou validada com data retroativa.
@@ -64,10 +86,10 @@ doc.text(texto1, margemEsquerda, margemSuperior + 10, { maxWidth: larguraPagina 
       CLÁUSULA SEGUNDA. As atividades a serem desenvolvidas durante o Estágio, objeto do presente Termo de Compromisso, constarão de Plano de Estágio construído pelo (a) Estagiário (a) em conjunto com a Concedente e orientado por professor da Instituição de Ensino. 
       Parágrafo primeiro: O Plano de Atividade de Estágio – PAE está anexo ao Termo de Compromisso de Estágio. 
       CLÁUSULA TERCEIRA. Fica compromissado entre as partes que:
-      I - As atividades do Estágio a serem cumpridas pelo (a) Estagiário (a) serão no horário das _____ às ____ horas, com intervalo das refeições das _____ às _____ horas, de 2ª a 6ª feira, perfazendo _______  horas semanais; 
+      I - As atividades do Estágio a serem cumpridas pelo (a) Estagiário (a) serão no horário das ${dadosEstagio.entrada || "____"} às ${dadosEstagio.saida || "___ "} horas, com intervalo das refeições das ${dadosEstagio.refeicao || "___ "}horas, de 2ª a 6ª feira, perfazendo  ${dadosEstagio.semana || "____"}  horas semanais; 
       II - A jornada de atividade do (a) Estagiário (a) deverá compatibilizar-se com o horário escolar do (a) Estagiário (a) e com o horário da Concedente; 
-      III - Este Termo de Compromisso terá vigência de __/___/___ a __/__/____, podendo ser denunciado a qualquer tempo, por qualquer das três partes envolvidas, unilateralmente, mediante comunicação escrita, com antecedência mínima de 5 (cinco) dias; 
-      IV-     O (A) Estagiário (a) receberá da concedente durante o período de estágio, uma bolsa no valor de R$ ________ (___________) e auxílio transporte, conforme acordado entre as partes;  
+      III - Este Termo de Compromisso terá vigência de  ${dadosEstagio.dataIncial || "____"} a  ${dadosEstagio.dataFinal || "____"}, podendo ser denunciado a qualquer tempo, por qualquer das três partes envolvidas, unilateralmente, mediante comunicação escrita, com antecedência mínima de 5 (cinco) dias; 
+      IV-     O (A) Estagiário (a) receberá da concedente durante o período de estágio, uma bolsa no valor de R$ ${dadosEstagio.valor || "____"} e auxílio transporte, conforme acordado entre as partes;  
       V - Nos períodos em que a instituição de ensino adotar verificações de aprendizagem periódica ou final, a carga horária do estágio será reduzida pelo menos à metade para garantir o bom desempenho do estudante, conforme o art. 10, § 2º da Lei de Estágio;
       VI - A duração do estágio, na mesma parte concedente, não poderá exceder 2 (dois) anos, exceto quando se tratar de estagiário com deficiência, conforme art. 11 da Lei de Estágio;
       VII - O Estágio não pode, em qualquer hipótese, se estender após a conclusão do Curso Superior de Tecnologia.
@@ -102,11 +124,30 @@ doc.text(texto1, margemEsquerda, margemSuperior + 10, { maxWidth: larguraPagina 
       CLÁUSULA DÉCIMA PRIMEIRA. As partes elegem o Foro da Comarca da Capital do Estado de São Paulo, com expressa renúncia de outro, por mais privilegiado que seja para dirimir qualquer questão emergente do presente Termo de Compromisso.
       CLÁUSULA DÉCIMA. Assim, materializado e caracterizado, o presente Estágio, segundo a legislação, não acarretará vínculo empregatício de qualquer natureza entre o (a) Estagiário (a) e a Concedente, nos termos do que dispõem o Artigo 12º da Lei nº 11.788/08.  
       Por estarem de inteiro e comum acordo com as condições e dizeres deste instrumento, as partes assinam-no em 3 (três) vias de igual teor e forma, todas assinadas pelas partes, depois de lido, conferido e achado conforme em todos os seus termos.
-      CIDADE, XX de XXXXX de 20XX. 
+      Campinas, ${dataAtual.getDate()} de ${dataAtual.getMonth() + 1} de  ${dataAtual.getFullYear()}. 
+
+
+
+
+
+
+
+
+      _________________________________
+      ${dadosEstagio.nomeDoAluno}
+
+
+      _________________________________
+      ${dadosEstagio.superior }
+
+
+      _________________________________
+
 
 
       `;
 
+    
     // Quebra o texto para caber na largura da página
     doc.setFontSize(10);
     const linhasTexto = doc.splitTextToSize(texto, larguraPagina);
@@ -136,18 +177,18 @@ doc.text(texto1, margemEsquerda, margemSuperior + 10, { maxWidth: larguraPagina 
     // Adicionar o texto
     adicionarTexto();
 
-    // Salvar o PDF
-
-    // Exemplo de espaço para preencher (linhas) com dados dinâmicos
-    //doc.text(`Concedente: ${dadosEstagio.nomeConcedente || "_____________________________"}`, margemEsquerda, margemSuperior + 80);
-    //doc.text(`CNPJ: ${dadosEstagio.cnpj || "_______________________________"}`, margemEsquerda, margemSuperior + 90);
-    //doc.text(`Endereço: ${dadosEstagio.enderecoConcedente || "_____________________________"}`, margemEsquerda, margemSuperior + 100);
-    //doc.text(`Estagiário: ${dadosEstagio.nome || "_____________________________"}`, margemEsquerda, margemSuperior + 110);
-    //doc.text(`RG: ${dadosEstagio.rg || "_________________________________"}`, margemEsquerda, margemSuperior + 120);
-
     // Salvar o arquivo PDF
     doc.save("termo_compromisso_estagio.pdf");
   };
+
+  // Renderização condicional para exibir carregamento ou erro
+  if (loading) {
+    return <div>Carregando os dados, por favor aguarde...</div>;
+  }
+
+  if (error) {
+    return <div>Erro: {error}</div>;
+  }
 
   return (
     <div>

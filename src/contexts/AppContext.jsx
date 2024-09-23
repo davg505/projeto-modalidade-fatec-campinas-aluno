@@ -85,23 +85,70 @@ export const AppContextProvider = (props) => {
         }
     };
 
-  
 
 
     // Enviar dados para TERMO DE COMPROMISSO PARA A REALIZAÇÃO DE ESTÁGIO SUPERVISIONADO NÃO OBRIGATÓRIO (REMUNERADO)
     const enviarDadosTermoNOR = async () => {
         try {
-          const { data: alunoData } = await Api.get('/aluno');
-          if (!alunoData || alunoData.length === 0) {
-            throw new Error('Nenhum aluno encontrado');
-          }
-          const aluno = alunoData[0]; // Supondo que você quer pegar o primeiro aluno
-          return aluno;
+            const { data: empresaData } = await Api.get('/entradaEmpresaAluno');
+            console.log('Dados da Empresa:', empresaData);
+            if (!empresaData || empresaData.length === 0) {
+                throw new Error('Nenhum dado empresa encontrado');
+               ;
+            }
+            const dadosEmpresa = empresaData[0];
+
+            const { data: estagioData } = await Api.get('/entradaDadosEstagioAluno');
+            if (!estagioData || estagioData.length === 0) {
+                throw new Error('Nenhum aluno encontrado');
+            }
+
+            const dadosEstagio = estagioData[0];
+
+            const { data: alunoData } = await Api.get('/aluno'); 
+            if (!alunoData || alunoData.length === 0) {
+                throw new Error('Nenhum aluno encontrado');
+            }
+            const aluno = alunoData[0];
+
+            const { data: pessoalData } = await Api.get('/dadosPessoalAluno'); 
+            if (!pessoalData || pessoalData.length === 0) {
+                throw new Error('Nenhum aluno encontrado');
+            }
+            const pessoal = pessoalData[0];
+
+            const { data: dadosFatec } = await Api.get('/dadosFatec'); 
+            if (!dadosFatec || dadosFatec.length === 0) {
+                throw new Error('Nenhum aluno encontrado');
+            }
+            const fatec = dadosFatec[0];
+
+            const { data: dadosFatecCurso } = await Api.get('/dadosFatecCurso'); 
+            if (!dadosFatecCurso || dadosFatecCurso.length === 0) {
+                throw new Error('Nenhum aluno encontrado');
+            }
+            const curso = dadosFatecCurso[0];
+
+
+            const dadosParaTermo = {
+                ...dadosEmpresa,
+                nomeEmpresa: dadosEmpresa.name,
+                ...dadosEstagio,
+                ...aluno,
+                ...pessoal,
+                rgAluno: pessoal.rg,
+                enderecoAluno: pessoal.endereco,
+                ...curso,
+                cidadeFatec: fatec.cidade,
+                enderecoFatec: fatec.endereco,
+            
+            };
+        return dadosParaTermo;
         } catch (error) {
-          console.error('Erro ao buscar dados do aluno:', error);
-          return null;
+        console.error('Erro ao buscar dados do aluno:', error);
+        return null;
         }
-      };
+    };
     
     // Editar Solicitacao Estagio
     const editarSolicitacaoEstagio = async (solicitacao) => {
