@@ -31,6 +31,7 @@
     box-Shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     overflow: hidden;
+    color: white;
 }
 
 .Menu h1{
