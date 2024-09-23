@@ -1,8 +1,14 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  base: '/projeto-modalidade-fatec-campinas-aluno/',
+  base: '/projeto-modalidade-fatec-campinas-aluno/',  // Certifique-se de usar o nome correto do repositório.
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
+  },
 });
