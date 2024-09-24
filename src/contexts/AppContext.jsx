@@ -14,26 +14,25 @@ export const AppContextProvider = (props) => {
     const [tabelaEstagio, setTabelaEstagio] = useState([]);
 
     const [iconesAluno, setIconesAluno] = useState([
-        { id: 1, sigla: 'E', nome:'Estagio', link: '/estagio' },
-        { id: 2, sigla: 'IC', nome:'Iniciação Cientifica', link: '/estagio' },
-        { id: 3, sigla: 'EP', nome:'Equivalencia Profissional' , link: '/estagio'},
-        { id: 4, sigla: 'MA', nome:'Meus Avisos', link: '/estagio' },
-        { id: 5, sigla: 'MD', nome:'Meus dados',  link: '/estagio' },
-        { id: 6, sigla: 'T', nome:'Tutorial',  link: '/estagio' },
+        { id: 1, sigla: 'E', nome:'Estagio', link: '/estagio', texto:'Estagio' },
+        { id: 2, sigla: 'IC', nome:'I.Cientifica', link: '/estagio' , texto:'Iniciação Cientifica' },
+        { id: 3, sigla: 'EP', nome:'E.Profissional' , link: '/estagio', texto:'Equivalencia Profissional'},
+        { id: 4, sigla: 'MA', nome:'Avisos', link: '/estagio', texto:'Avisos' },
+        { id: 5, sigla: 'MD', nome:'Dados',  link: '/estagio', texto:'Meus dados' },
+        { id: 6, sigla: 'T', nome:'Tutorial',  link: '/estagio', texto:'Tutorial' },
 
         
     ]); 
     
     const [iconesEstagio, setIconesEstagio] = useState([
-        { id: 1, sigla: 'SE', nome:'Solicitar Estágio' },
-        { id: 2, sigla: 'ES', nome:'Editar Solicitação'},
-        { id: 3, sigla: 'CS', nome:'Cancelar Solicitação'},
-        { id: 4, sigla: 'PP', nome:'Prorrogação de período' },
-        { id: 5, sigla: 'EO', nome:'Não Obrigatório para Obrigatório' },
-        { id: 6, sigla: 'RT', nome:'Rescisão do termo' },
-        { id: 7, sigla: 'RE', nome:'Relatório de estágio' },
-        { id: 8, sigla: 'FA', nome:'Ficha de avaliação' },
-        { id: 9, sigla: 'FE', nome:'Finalização do Estágio' },
+        { id: 1, sigla: 'SE', nome:'S.Estágio',  texto:'Solicitar Estágio' },
+        { id: 3, sigla: 'CS', nome:'C.Solicitação' ,  texto:'Cancelar Solicitação'},
+        { id: 4, sigla: 'PP', nome:'P.Período' ,  texto:'Prorrogação de período' },
+        { id: 5, sigla: 'EO', nome:'N.O.Obrigatório' ,  texto:'Não Obrigatório para Obrigatório' },
+        { id: 6, sigla: 'RT', nome:'R.Termo',  texto:'Rescisão do termo' },
+        { id: 7, sigla: 'RE', nome:'R.Estágio' ,  texto:'Relatório de estágio' },
+        { id: 8, sigla: 'FA', nome:'F.Avaliação',  texto:'Ficha de avaliação'  },
+        { id: 9, sigla: 'FE', nome:'F.Estágio',  texto:'Finalização do Estágio' },
     
     ]);
 

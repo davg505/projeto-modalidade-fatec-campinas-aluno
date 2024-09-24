@@ -32,7 +32,7 @@ export const MenuRetravel = () => {
             </button >
             {showMenu && (
                 <div className={style.Menu}>
-                <h1>Ola, Aluno. Bem Vindo!</h1> 
+                <h2>Ola, Aluno. Bem Vindo!</h2> 
                 <div>
                     <TitulosIcones nomeTitulo={'Minha área'}/>
                     <div className={style['menu-icones']}>

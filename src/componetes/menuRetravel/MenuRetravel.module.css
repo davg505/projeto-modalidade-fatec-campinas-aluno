@@ -4,7 +4,7 @@
 
 .Trapezioinvertido {
     position: relative;
-    width: 385px;
+    width: 300px;
     height: 50px;
     background-color: #3498db;
     color: white;
@@ -22,8 +22,8 @@
 
 .Menu{
     position: relative;
-    width: 385px;
-    height: 450px;
+    width: 300px;
+    height: 500px;
     top: 20px;
     right: 0;
     background-color: var(--cinza);
@@ -34,7 +34,7 @@
     color: white;
 }
 
-.Menu h1{
+.Menu h2{
     text-align: center;
 }
 

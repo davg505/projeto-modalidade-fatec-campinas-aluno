@@ -1,0 +1,30 @@
+.Menu{
+    position: relative;
+    width: 300px;
+    height: 550px;
+    top: 20px;
+    right: 0;
+    background-color: var(--cinza);
+    color: var(--preto);
+    box-Shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    left: 6rem;
+    color: white;
+}
+
+.botaoDados {
+    width: 150px;
+    height: 50px;
+    background-color: #3498db;
+    color: white;
+    border-radius: 10px 20px 30px;
+}
+
+.botaoDadosEditar{
+    width: 80px;
+    height: 30px;
+    background-color: #3498db;
+    color: white;
+    border-radius:  20px 30px;
+}

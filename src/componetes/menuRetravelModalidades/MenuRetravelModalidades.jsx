@@ -16,7 +16,7 @@ export const MenuRetravelModalidade = () => {
 
 
     // Seleciona para estagio.
-    const iconesInicio = iconesEstagio.filter(item => item.id === 1 || item.id === 2 || item.id === 3 || item.id === 10 );
+    const iconesInicio = iconesEstagio.filter(item => item.id === 1 || item.id === 3 );
     const iconesDurante = iconesEstagio.filter(item => item.id === 4 || item.id === 5 || item.id === 6);
     const iconesFinal = iconesEstagio.filter(item => item.id === 7 || item.id === 8 || item.id === 9);
 
@@ -120,7 +120,7 @@ export const MenuRetravelModalidade = () => {
             </button>
             {showMenu && (
                 <div className={style.Menu}>
-                    <h1>Estágio</h1>
+                    <h2>Estágio</h2>
                     <div>
                         <TitulosIcones nomeTitulo={'Início estágio'} />
                         <div className={style['menu-icones']}>

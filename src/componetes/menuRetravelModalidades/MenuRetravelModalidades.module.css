@@ -4,7 +4,7 @@
 
 .Trapezio {
     position: relative;
-    width: 375px;
+    width: 300px;
     height: 50px;
     background-color: #3498db;
     color: white;
@@ -22,8 +22,8 @@
 
 .Menu{
     position: relative;
-    width: 375px;
-    height: 775px;
+    width: 300px;
+    height: 550px;
     top: 20px;
     right: 0;
     background-color: var(--cinza);
@@ -31,11 +31,11 @@
     box-Shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     overflow: hidden;
-    left: 8rem;
+    left: 6rem;
     color: white;
 }
 
-.Menu h1{
+.Menu h2{
     text-align: center;
 }
 
