@@ -38,9 +38,9 @@ export const MenuDados = () => {
     };
 
     // Exibe uma mensagem enquanto os dados estão sendo carregados
-    if ((!tabelaAluno || tabelaAluno.length === 0) && (!tabelaEstagio || tabelaEstagio.length === 0)) {
-        return <div>Carregando dados...</div>;
-    }
+   // if (!tabelaAluno || tabelaAluno.length === 0)  {
+   //     return <div>Carregando dados...</div>;
+   // }
 
     return (
         <div>
