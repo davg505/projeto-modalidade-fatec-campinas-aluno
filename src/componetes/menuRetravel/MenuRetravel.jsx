@@ -22,6 +22,8 @@ export const MenuRetravel = () => {
         setShowMenu(!showMenu);
     }
 
+
+
     return(
         <div className={style.MenuRetravel}>
             <button 
@@ -42,6 +44,7 @@ export const MenuRetravel = () => {
                                 id={item.id}
                                 sigla={item.sigla}
                                 nome={item.nome}
+                                link={item.link}
                             />
                         ))}
                     </div>
@@ -67,6 +70,7 @@ export const MenuRetravel = () => {
                                 id={item.id}
                                 sigla={item.sigla}
                                 nome={item.nome}
+                                link={item.link}
                             />
                         ))}
                     </div>

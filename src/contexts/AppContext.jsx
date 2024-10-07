@@ -17,9 +17,9 @@ export const AppContextProvider = (props) => {
         { id: 1, sigla: 'E', nome:'Estagio', link: '/estagio', texto:'Estagio' },
         { id: 2, sigla: 'IC', nome:'I.Cientifica', link: '/estagio' , texto:'Iniciação Cientifica' },
         { id: 3, sigla: 'EP', nome:'E.Profissional' , link: '/estagio', texto:'Equivalencia Profissional'},
-        { id: 4, sigla: 'MA', nome:'Avisos', link: '/estagio', texto:'Avisos' },
-        { id: 5, sigla: 'MD', nome:'Dados',  link: '/estagio', texto:'Meus dados' },
-        { id: 6, sigla: 'T', nome:'Tutorial',  link: '/estagio', texto:'Tutorial' },
+        { id: 4, sigla: 'MA', nome:'Avisos', link: '/avisos', texto:'Avisos' },
+        { id: 5, sigla: 'MD', nome:'Dados',  link: '/dados', texto:'Meus dados' },
+        { id: 6, sigla: 'T', nome:'Tutorial',  link: '/tutorial', texto:'Tutorial' },
 
         
     ]); 
@@ -228,7 +228,7 @@ export const AppContextProvider = (props) => {
         }
     };
 
-    // Carrega tabela aluno da pagina estagio 
+    // Carrega dados do aluno da pagina estagio 
     const carregarTabelaAluno = async () => {
         try {
             const { data } = await Api.get('/aluno'); // Buscando os dados da API
@@ -240,6 +240,19 @@ export const AppContextProvider = (props) => {
                 { id: 4, nomeColuna: 'Curso', dadoColuna: aluno.curso },
                 { id: 5, nomeColuna: 'Status', dadoColuna: aluno.status },
                 { id: 6, nomeColuna: 'Modalidade', dadoColuna: aluno.modalidade },
+            ]);
+        } catch (error) {
+            console.error('Erro ao carregar dados do aluno:', error);
+        }
+    };
+
+      // Carrega lista para os botoes meus dados 
+        const listaMeusDados = async () => {
+        try {
+            setTabelaAluno([
+                { id: 1, nomeColuna: 'Meus Dados' },
+                { id: 2, nomeColuna: 'Email'},
+                
             ]);
         } catch (error) {
             console.error('Erro ao carregar dados do aluno:', error);
@@ -352,6 +365,8 @@ export const AppContextProvider = (props) => {
                     enviarDadosTermoNOR,
                     adicionarDadosEmpresa,
                     adicionarDadosEstagioAluno,
+                    listaMeusDados,
+
                 }}
         >
             {children}

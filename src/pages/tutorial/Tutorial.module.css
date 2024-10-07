@@ -1,0 +1,42 @@
+.Tutorial {
+    display: flex;
+    position: relative;
+    margin-top: 6.5rem;
+    justify-content: flex-start; /* Alinha os itens horizontalmente à esquerda */
+}
+
+@media (max-width: 1200px) {
+    /* Ajustes para telas menores */
+    .Tutorial {
+    font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Ajustes para tablets */
+    .Tutorial {
+    font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Ajustes para smartphones */
+    .Tutorial {
+    font-size: 10px;
+    }
+}
+.conteudo{
+    position: relative;
+    margin-top: 3.5rem;
+
+}
+.Title2 {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    word-wrap: normal;
+    color: var(--branco);
+}
+
+.Menu{
+    margin-right: 5rem;
+    position: relative;
+}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { AbasDasSolicitacoes, MenuDados, MenuRetravel, MenuRetravelModalidade, TabelaAluno, TabelaModalidadesEstagio } from '../../componetes';
+import { AbasDasSolicitacoes, MenuDados, MenuRetravel, MenuRetravelModalidade } from '../../componetes';
 import { UseAppContext } from "../../hooks";
 import style from './Estagio.module.css';
 
@@ -35,9 +35,9 @@ export const Estagio = () => {
                     <h2 className={style.Title2}>Info - {termoDeEstagio}</h2>
                     {termoDeEstagio !== "Sem Solicitação" && <AbasDasSolicitacoes />}
                 </div>
+                <div>
                 <MenuDados/>
-                <TabelaAluno />
-                <TabelaModalidadesEstagio />
+                </div>
             </div>
         </div>
     );

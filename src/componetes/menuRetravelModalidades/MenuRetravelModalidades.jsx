@@ -10,7 +10,6 @@ export const MenuRetravelModalidade = () => {
 
     const [showMenu, setShowMenu] = useState(false);
     const [showSolicitarEstagio, setShowSolicitarEstagio] = useState(false); // Estado para controlar a exibição da janela
-    const [showEditarSolicitacaoEstagio, setShowEditarSolicitacaoEstagio] = useState(false); 
 
     const { iconesEstagio, cancelarSolicitacaoEstagio } = UseAppContext();
 
@@ -22,30 +21,6 @@ export const MenuRetravelModalidade = () => {
 
     const toggleMenu = () => {
         setShowMenu(!showMenu);
-    };
-
-    const handleEditarSolicitacaoEstagio = async () => {
-        try {
-            const { data } = await Api.get('/aluno');
-            const aluno = data[0]; // Assumindo que o primeiro aluno retornado é o que você quer verificar.
-
-            if (aluno.status === 'Enviado Solicitação') {
-                setShowEditarSolicitacaoEstagio(true); // Abre a janela se o status for 'Sem solicitação'
-            } else {
-                alert(`A solicitação não pode ser feita. Status atual: ${aluno.status}`);
-            }
-        } catch (error) {
-            console.error('Erro ao verificar o status do aluno:', error);
-        }
-    };
-
-    const handleCloseEditarSolicitacaoEstagio = () => {
-        setShowEditarSolicitacaoEstagio(false); // Fecha a janela
-    };
-
-    const handleSubmitEditarSolicitacaoEstagio = (data) => {
-        console.log("Dados do estágio enviados:", data);
-        setShowEditarSolicitacaoEstagio(false); // Fecha a janela após o envio
     };
 
     // Aqui faza verificação do status do usuario 
@@ -94,8 +69,7 @@ export const MenuRetravelModalidade = () => {
 
     const actions = {
         1: handleOpenSolicitarEstagio,
-        2: handleEditarSolicitacaoEstagio,
-        3: handleOpenCancelarEstagio,
+        2: handleOpenCancelarEstagio,
         
     };
     
@@ -168,11 +142,6 @@ export const MenuRetravelModalidade = () => {
                 handleSubmit={handleSubmitEstagio}
             />
 
-            <SolicitarEstagio
-                show={showEditarSolicitacaoEstagio}
-                handleClose={handleCloseEditarSolicitacaoEstagio}
-                handleSubmit={handleSubmitEditarSolicitacaoEstagio}
-            />
         </div>
     );
 };

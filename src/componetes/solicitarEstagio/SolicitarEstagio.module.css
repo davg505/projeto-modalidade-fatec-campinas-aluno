@@ -8,6 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 10000; /* z-index menor que o modal */
   }
   
   .modalContainer {
@@ -44,7 +45,7 @@
   
   .button {
     padding: 10px 20px;
-    background-color: #4caf50;
+    background-color: #3498db;
     color: white;
     border: none;
     border-radius: 5px;
@@ -52,6 +53,6 @@
   }
   
   .button:hover {
-    background-color: #45a049;
+    background-color: #3498cb;
   }
   
