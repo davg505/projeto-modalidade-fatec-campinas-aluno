@@ -1,13 +1,13 @@
 .Dados {
     display: flex;
     position: relative;
-    margin-top: 6.5rem;
-     justify-content: flex-start; /* Alinha os itens horizontalmente à esquerda */
+    padding-top: 7.5rem;
+    justify-content: flex-start; /* Alinha os itens horizontalmente à esquerda */
 }
 
 
 .Menu{
-    margin-right: 6rem;
+    margin-left: -2rem;
     position: relative;
 }
 
@@ -17,5 +17,5 @@
 
 .MenuDosDados{
     position: relative;
-    margin-top: 5rem;
+    margin-left: 7rem;
 }

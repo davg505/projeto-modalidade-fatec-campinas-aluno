@@ -1,23 +1,24 @@
 .Aviso {
     display: flex;
     position: relative;
-    margin-top: 6.5rem;
     justify-content: flex-start; /* Alinha os itens horizontalmente à esquerda */
+    padding-top: 7.5rem;
 }
 
 .Menu {
-    margin-right: 5rem;
+    margin-left: -2rem;
     position: relative;
 }
 
 .Conteudo {
-    margin-top: 5rem;
-    max-width: 800px;
+    margin-left: 8rem;
+    max-width: 80rem;
     padding: 2rem;
-    background-color: #f9f9f9;
-    border-radius: 10px;
+    background-color: var(--cinza);
+    border-radius: 1.5rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 
 .Conteudo h1 {
     font-size: 2rem;
@@ -29,7 +30,7 @@
     font-size: 1.2rem;
     line-height: 1.5;
     margin-bottom: 1.5rem;
-    color: #555;
+    color: var(--preto);
 }
 
 .Conteudo ul {
