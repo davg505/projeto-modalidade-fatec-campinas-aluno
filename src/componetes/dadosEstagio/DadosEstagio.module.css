@@ -8,6 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 10000; 
   }
   
   .modalContainer {
@@ -44,14 +45,14 @@
   
   .button {
     padding: 10px 20px;
-    background-color: #4caf50;
-    color: white;
+    background-color: var(--azul);
+    color: var(--branco);
     border: none;
     border-radius: 5px;
     cursor: pointer;
   }
   
   .button:hover {
-    background-color: #45a049;
+    background-color: var(--azul);
   }
   

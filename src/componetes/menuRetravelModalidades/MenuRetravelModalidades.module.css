@@ -10,6 +10,8 @@
     z-index: 1000; /* Assegura que a caixa esteja acima de outros elementos */
     display: flex; /* Garante que os filhos sejam exibidos corretamente */
     flex-direction: column;
+    left: -6rem;
+    top:  -6rem;
 }
 
 .Menu h2{

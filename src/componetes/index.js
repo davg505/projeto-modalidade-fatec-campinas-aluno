@@ -6,11 +6,13 @@ export * from './caixaDosTutorial';
 export * from './conteudo';
 export * from './dadosEmpresa';
 export * from './dadosEstagio';
+export * from './janelaNoObrigatorio';
+export * from './JanelaPPeriodo';
+export * from './janelaRTermo';
 export * from './menuDados';
 export * from './menuRetravel';
 export * from './menuRetravelModalidades';
 export * from './rodape';
 export * from './tabelaAluno';
 export * from './TabelaModalidadesEstagio';
-
 

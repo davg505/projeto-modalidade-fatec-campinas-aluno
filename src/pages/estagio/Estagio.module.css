@@ -10,14 +10,14 @@
 .Title2 {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   margin-left: 8rem;
-  margin-top: 3.5rem;
+  margin-top: -3.5rem;
   margin-bottom: 5rem;
   word-wrap: normal;
   color: var(--branco);
 }
 
 .Caixa {
-  margin-left: 15rem;
+  margin-left: -3rem;
+  margin-top: -3rem;
 }
-
 

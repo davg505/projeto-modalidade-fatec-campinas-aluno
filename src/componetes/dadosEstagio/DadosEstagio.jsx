@@ -2,6 +2,7 @@ import { useState } from "react";
 import { UseAppContext } from "../../hooks";
 import style from "./DadosEstagio.module.css"; // Importe o arquivo CSS
 
+// eslint-disable-next-line react/prop-types
 export const DadosEstagio = ({ show, handleClose, handleSubmit }) => {
 
     const [valor, setValor] = useState("");

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { UseAppContext } from "../../hooks";
 import style from "./SolicitarEstagio.module.css"; // Importe o arquivo CSS
 
+// eslint-disable-next-line react/prop-types
 const SolicitarEstagio = ({ show, handleClose, handleSubmit }) => {
   const [dataIncial, setDataIncial] = useState("");
   const [dataFinal, setDataFinal] = useState("");

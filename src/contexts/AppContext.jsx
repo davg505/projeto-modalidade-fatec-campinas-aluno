@@ -13,7 +13,7 @@ export const AppContextProvider = (props) => {
 
     const [tabelaEstagio, setTabelaEstagio] = useState([]);
 
-    const [iconesAluno, setIconesAluno] = useState([
+    const [iconesAluno] = useState([
         { id: 1, sigla: 'E', nome:'Estagio', link: '/estagio', texto:'Estagio' },
         { id: 2, sigla: 'IC', nome:'I.Cientifica', link: '/estagio' , texto:'Iniciação Cientifica' },
         { id: 3, sigla: 'EP', nome:'E.Profissional' , link: '/estagio', texto:'Equivalencia Profissional'},
@@ -24,7 +24,7 @@ export const AppContextProvider = (props) => {
         
     ]); 
     
-    const [iconesEstagio, setIconesEstagio] = useState([
+    const [iconesEstagio] = useState([
         { id: 1, sigla: 'SE', nome:'S.Estágio',  texto:'Solicitar Estágio' },
         { id: 3, sigla: 'CS', nome:'C.Solicitação' ,  texto:'Cancelar Solicitação'},
         { id: 4, sigla: 'PP', nome:'P.Período' ,  texto:'Prorrogação de período' },
@@ -325,7 +325,6 @@ export const AppContextProvider = (props) => {
         if (!alunoData || alunoData.length === 0) {
             throw new Error('Nenhum aluno encontrado');
         }
-        const aluno = alunoData[0];
 
         const { data: estagioData } = await Api.get('/estagio'); 
         if (!estagioData || estagioData.length === 0) {
@@ -337,7 +336,12 @@ export const AppContextProvider = (props) => {
             //Termo de Compromisso de Estágio não Obrigatório Remunerado
             if(estagio.TipoDeEstagio === "naoObrigatorio" && estagio.modelo === "remunerado") {
                 return "Termo de Compromisso de Estágio não Obrigatório Remunerado";
-            } else{
+            } else if (estagio.TipoDeEstagio === "obrigatorio" && estagio.modelo === "remunerado") {
+                return "Termo de Compromisso de Estágio Obrigatório Remunerado";
+            } else if (estagio.TipoDeEstagio === "obrigatorio" && estagio.modelo === "naoRemunerado") {
+                return "Termo de Compromisso de Estágio Obrigatório não Remunerado";
+            }
+            else{
                 return "Sem Solicitação";
             }
 
