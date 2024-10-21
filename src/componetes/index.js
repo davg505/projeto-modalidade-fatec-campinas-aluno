@@ -1,4 +1,6 @@
 export * from './abasDasSolicitacoes';
+export * from './botaoTrapezio';
+export * from './botaoTrapezioPadrao';
 export * from './cabecalho';
 export * from './caixaDosTutorial';
 export * from './conteudo';

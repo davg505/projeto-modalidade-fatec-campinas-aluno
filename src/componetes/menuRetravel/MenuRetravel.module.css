@@ -1,51 +1,29 @@
-.MenuRetravel{
-    position: 'relative'; 
-}
-
-.Trapezioinvertido {
-    position: relative;
-    width: 300px;
-    height: 50px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-    line-height: 50px; /* Alinha o texto verticalmente */
-    cursor: pointer;
-    outline: none;
-    clip-path: polygon(0% 0%, 100% 0%, 80% 100%, 20% 100%);
-    transform: rotate(270deg); /* Rotaciona o trapézio */
-    transition: background-color 0.3s ease;
-    margin-left: -7rem;
-}
-
-
-
-.Menu{
+.Menu {
     position: relative;
     width: 300px;
     height: 500px;
-    bottom: 8rem;
-    left: 5rem;
     background-color: var(--cinza);
     color: var(--preto);
-    box-Shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Corrigido: box-shadow com letras minúsculas */
     border-radius: 8px;
     overflow: hidden;
-    color: white;
+    z-index: 1000; /* Assegura que a caixa esteja acima de outros elementos */
+    display: flex; /* Garante que os filhos sejam exibidos corretamente */
+    flex-direction: column;
+    left: -6rem;
+    top:  -6rem;
 }
 
-.Menu h2{
+.Menu h2 {
     text-align: center;
+    color: var(--branco); /* Garantir que o texto seja preto e visível */
 }
 
 .menu-icones {
     display: flex;
     flex-wrap: wrap; /* Permite que os ícones quebrem a linha se necessário */
     gap: 30px; /* Espaçamento entre os ícones */
-    justify-content: center; /* Alinha os ícones à esquerda */
+    justify-content: center; /* Alinha os ícones ao centro */
     margin-top: 40px;
 }
 
@@ -53,5 +31,3 @@
     flex: 0 1 auto; /* Define o tamanho mínimo de cada ícone */
     text-align: center; /* Centraliza o conteúdo de cada ícone */
 }
-
-

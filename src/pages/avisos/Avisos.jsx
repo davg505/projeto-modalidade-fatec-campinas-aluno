@@ -1,12 +1,25 @@
-import { MenuRetravel } from '../../componetes';
+import { useState } from 'react';
+import { BotaoTrapezioPadrao, MenuRetravel } from '../../componetes';
 import style from './Avisos.module.css';
 
 export const Avisos = () => {
+    const [isMenuRetravelOpen, setIsMenuRetravelOpen] = useState(false);
+
+        // Função para abrir o MenuRetravel e fechar o MenuRetravelModalidade
+        const handleBotaoTrapezioPadraoClick = () => {
+            setIsMenuRetravelOpen(prev => !prev); // Alterna a visibilidade
+        };
     return (
         <div className={style.Aviso}>
-            <div className={style.Menu}>
-                <MenuRetravel />
-            </div>
+
+            <BotaoTrapezioPadrao 
+                toggleMenu={handleBotaoTrapezioPadraoClick} // Adiciona a lógica de clique
+            />  
+            {isMenuRetravelOpen && (
+                <div>
+                    <MenuRetravel />
+                </div>
+            )}
             <div className={style.Conteudo}>
                 {/* Primeiro bloco de avisos */}
                 <h1>Avisos Importantes sobre Estágio</h1>

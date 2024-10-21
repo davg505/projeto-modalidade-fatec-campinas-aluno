@@ -1,33 +1,13 @@
 .Tutorial {
     display: flex;
     position: relative;
-    margin-top: 6.5rem;
+    margin-top: 7rem;
     justify-content: flex-start; /* Alinha os itens horizontalmente à esquerda */
 }
 
-@media (max-width: 1200px) {
-    /* Ajustes para telas menores */
-    .Tutorial {
-    font-size: 14px;
-    }
-}
-
-@media (max-width: 768px) {
-    /* Ajustes para tablets */
-    .Tutorial {
-    font-size: 12px;
-    }
-}
-
-@media (max-width: 480px) {
-    /* Ajustes para smartphones */
-    .Tutorial {
-    font-size: 10px;
-    }
-}
 .conteudo{
     position: relative;
-    margin-top: 3.5rem;
+    margin-top: -5.5rem;
 
 }
 .Title2 {

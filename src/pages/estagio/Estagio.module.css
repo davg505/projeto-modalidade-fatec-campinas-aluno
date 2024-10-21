@@ -1,20 +1,10 @@
-.estagio {
+.Estagio {
   display: flex;
   position: relative;
   padding-top: 7.5rem;
   justify-content: flex-start; /* Alinha os itens horizontalmente à esquerda */
   font-size: 16px;
-  margin-left: -2rem;
-}
-
-/* Outras classes */
-.MenuEstagio {
-  margin-left: -50.75rem;
-  margin-top: 14.5rem;
-}
-
-.Menu2 {
-  margin-right: 25rem;
+  padding-left: 0;
 }
 
 .Title2 {
@@ -27,27 +17,7 @@
 }
 
 .Caixa {
-  margin-left: 8rem;
+  margin-left: 15rem;
 }
 
 
-@media (max-width: 1200px) {
-  /* Ajustes para telas menores */
-  .estagio {
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 768px) {
-  /* Ajustes para tablets */
-  .estagio {
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 480px) {
-  /* Ajustes para smartphones */
-  .estagio {
-    font-size: 10px;
-  }
-} 

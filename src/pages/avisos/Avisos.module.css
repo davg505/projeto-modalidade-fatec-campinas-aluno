@@ -5,18 +5,14 @@
     padding-top: 7.5rem;
 }
 
-.Menu {
-    margin-left: -2rem;
-    position: relative;
-}
-
 .Conteudo {
-    margin-left: 8rem;
+    margin-left: 1rem;
     max-width: 80rem;
     padding: 2rem;
     background-color: var(--cinza);
     border-radius: 1.5rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: -5rem;
 }
 
 
