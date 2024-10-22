@@ -15,7 +15,7 @@ export const AppContextProvider = (props) => {
 
     const [iconesAluno] = useState([
         { id: 1, sigla: 'E', nome:'Estagio', link: '/estagio', texto:'Estagio' },
-        { id: 2, sigla: 'IC', nome:'I.Cientifica', link: '/estagio' , texto:'Iniciação Cientifica' },
+        { id: 2, sigla: 'IC', nome:'I.Cientifica', link: '/iniciacaocientifica' , texto:'Iniciação Cientifica' },
         { id: 3, sigla: 'EP', nome:'E.Profissional' , link: '/estagio', texto:'Equivalencia Profissional'},
         { id: 4, sigla: 'MA', nome:'Avisos', link: '/avisos', texto:'Avisos' },
         { id: 5, sigla: 'MD', nome:'Dados',  link: '/dados', texto:'Meus dados' },
