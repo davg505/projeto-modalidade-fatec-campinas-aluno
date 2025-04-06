@@ -6,6 +6,7 @@ import { Avisos, Error404, Estagio, IniciacaoCientifica, Inicial, MeusDados, Tut
 
 
 export const Router = () => {
+
     return (
         <Routes>
             <Route path="/" element={<LayoutPadrao />}>
