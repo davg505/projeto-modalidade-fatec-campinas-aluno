@@ -1,14 +1,30 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BotaoTrapezioPadrao, MenuRetravel } from '../../componetes';
 import style from './Avisos.module.css';
+import { buscarDadosAluno } from '../../services/apiService';
 
 export const Avisos = () => {
     const [isMenuRetravelOpen, setIsMenuRetravelOpen] = useState(false);
+    const [aluno, setAluno] = useState(null);
 
         // Função para abrir o MenuRetravel e fechar o MenuRetravelModalidade
         const handleBotaoTrapezioPadraoClick = () => {
             setIsMenuRetravelOpen(prev => !prev); // Alterna a visibilidade
         };
+
+
+      useEffect(() => {
+        const carregarDados = async () => {
+          try {
+            const dados = await buscarDadosAluno();
+            setAluno(dados);
+          } catch (error) {
+            console.error('Erro ao carregar o perfil do aluno:', error);
+          }
+        };
+    
+        carregarDados();
+      }, []);    
     return (
         <div className={style.Aviso}>
 
@@ -24,7 +40,7 @@ export const Avisos = () => {
                 {/* Primeiro bloco de avisos */}
                 <h1>Avisos Importantes sobre Estágio</h1>
                 <p>
-                    Prezado(a) Aluno(a), por favor, fique atento às seguintes informações sobre o seu estágio:
+                    Prezado(a) {aluno ? aluno.nome_do_aluno : 'Carregando...'}, por favor, fique atento às seguintes informações sobre o seu estágio:
                 </p>
                 <ul>
                     <li>Você deve entregar os relatórios mensais até o dia 10 de cada mês.</li>

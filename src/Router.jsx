@@ -5,6 +5,7 @@ import { LayoutPadrao } from "./layout/layoutPadrao/LayoutPadrao";
 import { Avisos, Error404, Estagio, IniciacaoCientifica, Inicial, MeusDados, Tutorial } from './pages';
 
 
+
 export const Router = () => {
 
     return (

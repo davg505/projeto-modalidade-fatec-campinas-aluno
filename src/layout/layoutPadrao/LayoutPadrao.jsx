@@ -1,14 +1,17 @@
-import { Outlet } from "react-router-dom";
+// LayoutPadrao.jsx
+import { Outlet, useParams } from "react-router-dom";
 import { Cabecalho, Conteudo, Rodape } from "../../componetes";
 
+
 export const LayoutPadrao = () => {
-    return (
+
+  return (
     <>
-    <Cabecalho/>
-    <Conteudo>  
-    <Outlet/>
-    </Conteudo>
-    <Rodape/>
+      <Cabecalho />
+      <Conteudo>
+        <Outlet />
+      </Conteudo>
+      <Rodape />
     </>
-    );
+  );
 };
