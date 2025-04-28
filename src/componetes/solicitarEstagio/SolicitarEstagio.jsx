@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { UseAppContext } from "../../hooks";
 import style from "./SolicitarEstagio.module.css"; // Importe o arquivo CSS
+import { solicitacaoInicalEstagio } from '../../services/apiService';
 
 // eslint-disable-next-line react/prop-types
 const SolicitarEstagio = ({ show, handleClose, handleSubmit }) => {
@@ -9,17 +10,19 @@ const SolicitarEstagio = ({ show, handleClose, handleSubmit }) => {
   const [estagioTipo, setEstagioTipo] = useState("obrigatorio");
   const [estagioModelo, setEstagioModelo] = useState("Remunerado");
 
-  const { adicionarSolicitacaoEstagio,  editarSolicitacaoEstagio } = UseAppContext();
+  const { editarSolicitacaoEstagio } = UseAppContext();
 
   const onSubmit = () => {
     const solicitacao = {
-      estagioTipo,
-      estagioModelo,
-      dataIncial,
-      dataFinal,
+      time_de_estagio: estagioTipo === "obrigatorio" ? "Obrigatório" : "Não Obrigatório",
+      modelo: estagioModelo === "remunerado" ? "Remunerado" : "Não Remunerado",
+      data_inicial: dataIncial,
+      data_final: dataFinal,
     };
+
+    console.log(solicitacao);
   
-    adicionarSolicitacaoEstagio(solicitacao); // Chama a função para enviar a solicitação
+    solicitacaoInicalEstagio(solicitacao); // Chama a função para enviar a solicitação
     editarSolicitacaoEstagio(solicitacao); // Chama a função para enviar a solicitação
     handleSubmit(solicitacao); // Se ainda precisar dessa função
     handleClose(); // Fecha o modal após o envio

@@ -1,88 +1,114 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DadosEmpresa } from '../dadosEmpresa';
 import { DadosEstagio } from '../dadosEstagio';
 import GerarPDF from '../gerarPdf/GerarPDF';
 import style from './AbasDasSolicitacoes.module.css';
+import { buscarDadosEstagio, buscarDadosEmpresa } from '../../services/apiService';
 
 export const AbasDasSolicitacoes = () => {
-    const [abaAtiva, setAbaAtiva] = useState(null);
-    const [showDadosEmpresa, setShowDadosEmpresa] = useState(false); 
-    const [showDadosEstagio, setShowDadosEstagio] = useState(false);
-    const [empresaPreenchida, setEmpresaPreenchida] = useState(false); // Novo estado para controlar se os dados da empresa foram preenchidos
-    const [estagioPreenchido, setEstagioPreenchido] = useState(false); // Novo estado para controlar se os dados do estágio foram preenchidos
+  const [abaAtiva, setAbaAtiva] = useState(null);
+  const [showDadosEmpresa, setShowDadosEmpresa] = useState(false);
+  const [showDadosEstagio, setShowDadosEstagio] = useState(false);
+  const [dadosEstagio, setEstagio] = useState(null);
+  const [dadosEmpresa, setEmpresa] = useState(null);
 
-    const handleAbaClick = (aba) => {
-        if (abaAtiva === aba) {
-            setAbaAtiva(null);
-        } else {
-            setAbaAtiva(aba);
-        }
+  // Carrega dados do estágio
+  useEffect(() => {
+    const carregarDadosEstagio = async () => {
+      try {
+        const dados = await buscarDadosEstagio();
+        console.log('✅ Dados estágio:', dados);
+        setEstagio(dados);
+      } catch (error) {
+        console.error('Erro ao carregar os dados do estágio:', error);
+      }
     };
+    carregarDadosEstagio();
+  }, []);
 
-    const handleOpenDadosEmpresa = () => {
-        setShowDadosEmpresa(true); 
+  // Carrega dados da empresa
+  useEffect(() => {
+    const carregarDadosEmpresa = async () => {
+      try {
+        const dados = await buscarDadosEmpresa();
+        console.log('✅ Dados empresa:', dados);
+        setEmpresa(dados);
+      } catch (error) {
+        console.error('Erro ao carregar os dados da empresa:', error);
+      }
     };
+    carregarDadosEmpresa();
+  }, []);
 
-    const handleCloseDadosEmpresa = () => {
-        setShowDadosEmpresa(false); 
-    };
+  const handleAbaClick = (aba) => {
+    setAbaAtiva(prev => (prev === aba ? null : aba));
+  };
 
-    const handleSubmitDadosEmpresa = (data) => {
-        console.log("Dados do empresa enviados:", data);
-        setShowDadosEmpresa(false);
-        setEmpresaPreenchida(true); // Marca como preenchido
-    };
+  const handleOpenDadosEmpresa = () => setShowDadosEmpresa(true);
+  const handleCloseDadosEmpresa = () => setShowDadosEmpresa(false);
 
-    const handleOpenDadosEstagio = () => {
-        setShowDadosEstagio(true); 
-    };
+  const handleOpenDadosEstagio = () => setShowDadosEstagio(true);
+  const handleCloseDadosEstagio = () => setShowDadosEstagio(false);
 
-    const handleCloseDadosEstagio = () => {
-        setShowDadosEstagio(false); 
-    };
+  // Funções fictícias para submissão (você pode alterar conforme o que deseja fazer)
+  const handleSubmitDadosEmpresa = (dados) => {
+    console.log('🔵 Dados da empresa enviados:', dados);
+    setEmpresa(dados);
+    setShowDadosEmpresa(false);
+  };
 
-    const handleSubmitDadosEstagio = (data) => {
-        console.log("Dados do estágio enviados:", data);
-        setShowDadosEstagio(false); 
-        setEstagioPreenchido(true); // Marca como preenchido
-    };
+  const handleSubmitDadosEstagio = (dados) => {
+    console.log('🟢 Dados do estágio enviados:', dados);
+    setEstagio(dados);
+    setShowDadosEstagio(false);
+  };
 
-    return (
-        <div className={style.AbasContainer}>
-            <div className={abaAtiva === 'Pedidos de solicitações' ? style.AbaAtiva : style.Aba} onClick={() => handleAbaClick('Pedidos de solicitações')}>
-                <h2>Dados - Documentação</h2>
-            </div>
+  return (
+    <div className={style.AbasContainer}>
+      <div
+        className={abaAtiva === 'Pedidos de solicitações' ? style.AbaAtiva : style.Aba}
+        onClick={() => handleAbaClick('Pedidos de solicitações')}
+      >
+        <h2>Dados - Documentação</h2>
+      </div>
+
             {abaAtiva === 'Pedidos de solicitações' && (
-                <div>
-                    <h3 className={style.Title2}>Preencher dados empresa:</h3>
-                    <button className={style.button} onClick={handleOpenDadosEmpresa}>Adicionar</button>
-                    <h3 className={style.Title2}>Preencher dados estagio:</h3>
-                    <button className={style.button} onClick={handleOpenDadosEstagio}>Adicionar</button>
-                    
-                    {/* Exibe o GerarPDF apenas se ambos os dados forem preenchidos */}
-                    {empresaPreenchida && estagioPreenchido && (
-                        <>
-                            <h3 className={style.Title2}>Preencher termo automático:</h3>
-                            <GerarPDF />
-                            <h3 className={style.Title2}>Enviar para análise:</h3>
-                            <button className={style.button}>Enviar termos prontos</button>
-                            <h3 className={style.Title2}>Cancelar termo ou envio:</h3>
-                            <button className={style.button}>Cancelar envio</button>
-                        </>
-                    )}
-                    
-                </div>
+        <div>
+            {!dadosEstagio || !dadosEmpresa ? (
+            <>
+                <h3 className={style.Title2}>Preencher dados empresa:</h3>
+                <button className={style.button} onClick={handleOpenDadosEmpresa}>Adicionar</button>
+
+                <h3 className={style.Title2}>Preencher dados estágio:</h3>
+                <button className={style.button} onClick={handleOpenDadosEstagio}>Adicionar</button>
+            </>
+            ) : (
+            <>
+                <h3 className={style.Title2}>Preencher termo automático:</h3>
+                <GerarPDF />
+
+                <h3 className={style.Title2}>Enviar para análise:</h3>
+                <button className={style.button}>Enviar termos prontos</button>
+
+                <h3 className={style.Title2}>Cancelar termo ou envio:</h3>
+                <button className={style.button}>Cancelar envio</button>
+            </>
             )}
-            <DadosEmpresa
-                show={showDadosEmpresa}
-                handleClose={handleCloseDadosEmpresa}
-                handleSubmit={handleSubmitDadosEmpresa}
-            />
-            <DadosEstagio
-                show={showDadosEstagio}
-                handleClose={handleCloseDadosEstagio}
-                handleSubmit={handleSubmitDadosEstagio}
-            />
         </div>
-    );
+        )}
+
+
+      <DadosEmpresa
+        show={showDadosEmpresa}
+        handleClose={handleCloseDadosEmpresa}
+        handleSubmit={handleSubmitDadosEmpresa}
+      />
+
+      <DadosEstagio
+        show={showDadosEstagio}
+        handleClose={handleCloseDadosEstagio}
+        handleSubmit={handleSubmitDadosEstagio}
+      />
+    </div>
+  );
 };
