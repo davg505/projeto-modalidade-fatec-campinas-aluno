@@ -77,9 +77,10 @@ export const Estagio = () => {
       <h1 className={style.Title2}>Área Aluno: Modalidade Estágio</h1>
         
         <div className={style.Caixa}>
-          {dadosEstagio ? (
+          { dadosEstagio ?  (
             <>
               <h2 className={style.Title2}> Dados Estágio: {dadosEstagio.solicitacao}</h2>
+              
               
               {dadosEmpresa && dadosEmpresa.nome_empresa ? (
                 <h2 className={style.Title2}> Dados Empresa: OK</h2>

@@ -5,4 +5,4 @@ export * from './iniciacaoCientifica';
 export * from './inicial';
 export * from './meusDados';
 export * from './tutorial';
-
+export * from './equivalenciaProfissional';

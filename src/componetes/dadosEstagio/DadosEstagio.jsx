@@ -10,6 +10,8 @@ export const DadosEstagio = ({ show, handleClose, handleSubmit }) => {
     const [horasEntrada, setHorasEntrada] = useState("");
     const [horasSaida, setHorasSaida] = useState("");
     const [horasRefeicao, setHorasRefeicao] = useState("");
+    const [seguradora, setSeguradora] = useState("");
+    const [apolice, setApolice] = useState("");
 
     const onSubmit = async () => {
         const dadosEstagio = {
@@ -18,6 +20,8 @@ export const DadosEstagio = ({ show, handleClose, handleSubmit }) => {
             horas_entrada: horasEntrada,
             horas_saida: horasSaida,
             horas_refeicao: horasRefeicao,
+            seguradora: seguradora,
+            numero_apolice: apolice,
         };
     
         try {
@@ -97,6 +101,28 @@ export const DadosEstagio = ({ show, handleClose, handleSubmit }) => {
                     />
                 </div>
 
+                  <div className={style.labelContainer}>
+                                    <label>Nome da seguradora:</label>
+                                    <input
+                                        className={style.input}
+                                        type="text"
+                                        value={seguradora}
+                                        onChange={(e) => setSeguradora(e.target.value)}
+                                    />
+                    </div>
+
+                    
+                  <div className={style.labelContainer}>
+                                    <label> Apólice de Seguro nº:</label>
+                                    <input
+                                        className={style.input}
+                                        type="text"
+                                        value={apolice}
+                                        onChange={(e) => setApolice(e.target.value)}
+                                    />
+                    </div>
+
+
                 <div className={style.buttonsContainer}>
                     <button className={style.button} onClick={onSubmit}>
                         Enviar
@@ -105,6 +131,7 @@ export const DadosEstagio = ({ show, handleClose, handleSubmit }) => {
                         Cancelar
                     </button>
                 </div>
+
             </div>
         </div>
     );

@@ -2,8 +2,8 @@ import axios from 'axios';
 
 // Configuração base da API, adaptada ao seu back-end (ajuste a URL conforme necessário)
 const apiService = axios.create({
-  //baseURL: 'http://localhost:3001/api',  // Endereço do back-end
-  baseURL: 'https://backend-fatec.onrender.com/api',
+  baseURL: 'http://localhost:3001/api',  // Endereço do back-end
+  //baseURL: 'https://backend-fatec.onrender.com/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -64,6 +64,29 @@ apiService.interceptors.request.use((config) => {
       throw error;
     }
   };
+
+
+     //busca os dados de empresa aluno 
+     export const buscarDadosAlunoFatec = async () => {
+      try {
+        const response = await apiService.get('/dados_fatec_aluno');
+        return response.data; // Isso será o aluno retornado do back-end
+      } catch (error) {
+        console.error('Erro ao buscar dados fatec info:', error);
+        throw error;
+      }
+    };
+
+     //busca os dados da solicaitação do estagio
+     export const buscarDadosEstagioSolicitacao = async () => {
+      try {
+        const response = await apiService.get('/estagio_solicitacao');
+        return response.data; // Isso será o aluno retornado do back-end
+      } catch (error) {
+        console.error('Erro ao buscar dados estagio info:', error);
+        throw error;
+      }
+    };
 
   //PUT
 

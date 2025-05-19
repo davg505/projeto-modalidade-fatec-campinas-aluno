@@ -3,7 +3,7 @@ import { DadosEmpresa } from '../dadosEmpresa';
 import { DadosEstagio } from '../dadosEstagio';
 import GerarPDF from '../gerarPdf/GerarPDF';
 import style from './AbasDasSolicitacoes.module.css';
-import { buscarDadosEstagio, buscarDadosEmpresa } from '../../services/apiService';
+import { buscarDadosEstagio, buscarDadosEmpresa, buscarDadosEstagioSolicitacao } from '../../services/apiService';
 
 export const AbasDasSolicitacoes = () => {
   const [abaAtiva, setAbaAtiva] = useState(null);
@@ -11,6 +11,7 @@ export const AbasDasSolicitacoes = () => {
   const [showDadosEstagio, setShowDadosEstagio] = useState(false);
   const [dadosEstagio, setEstagio] = useState(null);
   const [dadosEmpresa, setEmpresa] = useState(null);
+  const [dadosSolicitacao, setSolicitacao] = useState(null);
 
   // Carrega dados do estágio
   useEffect(() => {
@@ -24,6 +25,21 @@ export const AbasDasSolicitacoes = () => {
       }
     };
     carregarDadosEstagio();
+  }, []);
+
+
+   // Carrega dados do estágio
+   useEffect(() => {
+    const carregarDadosEstagioSolicitacao = async () => {
+      try {
+        const dados = await buscarDadosEstagioSolicitacao();
+        console.log('✅ Dados estágio:', dados);
+        setSolicitacao(dados);
+      } catch (error) {
+        console.error('Erro ao carregar os dados do estágio:', error);
+      }
+    };
+    carregarDadosEstagioSolicitacao();
   }, []);
 
   // Carrega dados da empresa
@@ -74,7 +90,7 @@ export const AbasDasSolicitacoes = () => {
 
             {abaAtiva === 'Pedidos de solicitações' && (
         <div>
-            {!dadosEstagio || !dadosEmpresa ? (
+            {!dadosSolicitacao  || !dadosEmpresa ? (
             <>
                 <h3 className={style.Title2}>Preencher dados empresa:</h3>
                 <button className={style.button} onClick={handleOpenDadosEmpresa}>Adicionar</button>

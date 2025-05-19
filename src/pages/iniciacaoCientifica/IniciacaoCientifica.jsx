@@ -1,16 +1,37 @@
 import { useEffect, useState } from 'react';
-import { AbasDasSolicitacoes, BotaoTrapezio, BotaoTrapezioPadrao, MenuRetravel, MenuRetravelModalidade } from '../../componetes';
+import { AbasDasSolicitacoes, 
+    BotaoTrapezio, 
+    BotaoTrapezioPadrao, 
+    MenuRetravel, 
+    MenuRetravelModalidadeic 
+} from '../../componetes';
 import { UseAppContext } from "../../hooks";
 import style from './IniciacaoCientifica.module.css';
+import { buscarDadosEstagio} from '../../services/apiService';
 
 
 
 export const IniciacaoCientifica = () => {
+    const [dadosEstagio, setEstagio] = useState(null);
     const { carregarDadosEstagioDoTermo } = UseAppContext();
     const [termoDeEstagio, setTermoDeEstagio] = useState("");
     const [isMenuRetravelOpen, setIsMenuRetravelOpen] = useState(false);
     const [isMenuRetravelModalidadeOpen, setIsMenuRetravelModalidadeOpen] = useState(false);
 
+
+            // Carrega dados do estágio
+        useEffect(() => {
+            const carregarDadosEstagio = async () => {
+            try {
+                const dados1 = await buscarDadosEstagio();
+                console.log('✅ Dados estágio:', dados1);
+                setEstagio(dados1);
+            } catch (error) {
+                console.error('Erro ao carregar os dados do estágio:', error);
+            }
+            };
+            carregarDadosEstagio();
+        }, []);
     useEffect(() => {
         const carregarTermo = async () => {
             try {
@@ -53,12 +74,12 @@ export const IniciacaoCientifica = () => {
 
             {isMenuRetravelModalidadeOpen && (
                 <div>
-                    <MenuRetravelModalidade />
+                    <MenuRetravelModalidadeic />
                 </div>
             )}
 
             <div className={style.Caixa}>
-                <h1 className={style.Title2}>Área Aluno: I.Cientifica</h1>
+                <h1 className={style.Title2}>Área Aluno: Modalidade I.Cientifica</h1>
                 <div className={style.Caixa}>
                     <h2 className={style.Title2}>Info - {termoDeEstagio}</h2>
                     {termoDeEstagio !== "Sem Solicitação" && <AbasDasSolicitacoes />}

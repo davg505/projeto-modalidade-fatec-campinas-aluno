@@ -1,17 +1,17 @@
 import jsPDF from "jspdf";
 import { useEffect, useState } from "react";
-import { UseAppContext } from "../../hooks";
 import style from './GerarPDF.module.css';
-import { buscarDadosEstagio, buscarDadosEmpresa, buscarDadosAluno, buscarDadosEstagioInfo } from '../../services/apiService';
+import { buscarDadosEstagio, buscarDadosEmpresa, buscarDadosAluno, buscarDadosEstagioInfo, buscarDadosAlunoFatec, buscarDadosEstagioSolicitacao } from '../../services/apiService';
 
 const GerarPDF = () => {
   const [dadosEstagio, setEstagio] = useState(null);
   const [dadosEmpresa, setEmpresa] = useState(null);
   const [dadosAluno, setAluno] = useState(null);
   const [dadosEstagioInfo, setEstagioInfo] = useState(null);
+  const [dadosFatec, setFatec] = useState(null);
+  const [dadosSolicitacaoEstagio, setSolicitacaoEstagio] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { enviarDadosTermoNOR } = UseAppContext();
   const [retryCount, setRetryCount] = useState(0);
 
   const MAX_RETRIES = 3;
@@ -27,14 +27,20 @@ const GerarPDF = () => {
       const empresa = await buscarDadosEmpresa();
       const aluno = await buscarDadosAluno();
       const estagioInfo = await buscarDadosEstagioInfo();
+      const fatec = await buscarDadosAlunoFatec();
+      const solicitacaoEstagio = await buscarDadosEstagioSolicitacao();
       console.log('✅ Dados estágio:', estagio);
       console.log('✅ Dados empresa:', empresa);
-      console.log('✅ Dados empresa:', aluno);
-      console.log('✅ Dados empresa:', estagioInfo);
+      console.log('✅ Dados aluno:', aluno);
+      console.log('✅ Dados info:', estagioInfo);
+      console.log('✅ Dados fatec:', fatec);
+      console.log('✅ Dados fatec:', solicitacaoEstagio);
       setEstagio(estagio);
       setEmpresa(empresa);
       setAluno(aluno);
       setEstagioInfo(estagioInfo);
+      setFatec(fatec);
+      setSolicitacaoEstagio(solicitacaoEstagio);
     } catch (err) {
       console.error('Erro ao carregar dados:', err);
       setError(err);
@@ -82,7 +88,7 @@ const GerarPDF = () => {
     
           TERMO DE COMPROMISSO PARA A REALIZAÇÃO DE ESTÁGIO SUPERVISIONADO NÃO OBRIGATÓRIO (REMUNERADO) (Lei nº 11.788/08)
     
-          Pelo presente instrumento, as partes a seguir nomeadas e ao final assinadas, de um lado ${dadosEmpresa.nome_empresa || "_____________________________"}, inscrita no CNPJ sob o nº ${dadosEmpresa.cnpj || "_____________________________"}, sita à rua ${dadosEmpresa.endereco || "_____________________________"}, doravante denominada CONCEDENTE, neste ato representada por ${dadosEmpresa.nome_representante || "_____________________________"}, portador do CPF ${dadosEmpresa.cpf_representante || "_____________________________"}, e de outro lado, o(a) estudante ${dadosEstagio.nomeDoAluno || "_____________________________"}, RG nº ${dadosEstagio.rgAluno || "_____________________________"}, residente à ${dadosEstagio.enderecoAluno || "_____________________________"}  , na cidade de ${dadosEstagio.cidade || "_____________________________"}  , doravante denominado ESTAGIÁRIO (A), aluno (a) regularmente matriculado (a) no Curso Superior de Tecnologia em ${dadosEstagio.curso || "_____________________________"}  da Faculdade de Tecnologia de ${dadosEstagio.cidadeFatec || "_____________________________"}  – Fatec ${dadosEstagio.cidadeFatec || "_____________________________"} , localizada na cidade de ${dadosEstagio.cidadeFatec || "_____________________________"} , Estado de São Paulo, doravante denominada INSTITUIÇÃO DE ENSINO, na condição de interveniente, acordam e estabelecem entre si as cláusulas e condições que regerão este TERMO DE COMPROMISSO DE ESTÁGIO NÃO OBRIGATÓRIO REMUNERADO.
+          Pelo presente instrumento, as partes a seguir nomeadas e ao final assinadas, de um lado ${dadosEmpresa.nome_empresa || "_____________________________"}, inscrita no CNPJ sob o nº ${dadosEmpresa.cnpj || "_____________________________"}, sita à rua ${dadosEmpresa.endereco || "_____________________________"}, doravante denominada CONCEDENTE, neste ato representada por ${dadosEmpresa.nome_representante || "_____________________________"}, portador do CPF ${dadosEmpresa.cpf_representante || "_____________________________"}, e de outro lado, o(a) estudante ${dadosAluno.nome_do_aluno || "_____________________________"}, RG nº ${dadosAluno.rg || "_____________________________"}, residente à ${dadosAluno.endereco || "_____________________________"}  , na cidade de ${dadosAluno.cidade || "_____________________________"}  , doravante denominado ESTAGIÁRIO (A), aluno (a) regularmente matriculado (a) no Curso Superior de Tecnologia em ${dadosAluno.curso || "_____________________________"}  da Faculdade de Tecnologia de ${dadosFatec.cidade || "_____________________________"}  – Fatec ${dadosFatec.cidade || "_____________________________"} , localizada na cidade de ${dadosFatec.cidade || "_____________________________"} , Estado de São Paulo, doravante denominada INSTITUIÇÃO DE ENSINO, na condição de interveniente, acordam e estabelecem entre si as cláusulas e condições que regerão este TERMO DE COMPROMISSO DE ESTÁGIO NÃO OBRIGATÓRIO REMUNERADO.
           CLÁUSULA PRIMEIRA. É objeto do presente Termo de Compromisso de Estágio autorizar a realização de estágio nos termos da Lei 11.788/08 de 25/09/2008, com a finalidade de possibilitar ao (à) Estagiário (a) complementação e aperfeiçoamento prático de seu Curso Superior de Tecnologia, celebrado entre a Concedente e a Instituição de Ensino da qual o (a) Estagiário (a) é aluno (a).
           Parágrafo Primeiro. Entende-se por estágio profissional aquele desenvolvido em ambiente real de trabalho, assumido como ato educativo e supervisionado pela instituição de ensino, em regime de parceria com organizações do mundo do trabalho, objetivando efetiva preparação do estudante para o trabalho, conforme o art. 34, § 1º da Resolução CNE/CP Nº 1/2021. 
           Parágrafo Segundo. As atividades de estágio somente poderão ser iniciadas após assinatura do Termo de Compromisso de Estágio pelas partes envolvidas, não sendo reconhecida ou validada com data retroativa.
@@ -90,10 +96,10 @@ const GerarPDF = () => {
           CLÁUSULA SEGUNDA. As atividades a serem desenvolvidas durante o Estágio, objeto do presente Termo de Compromisso, constarão de Plano de Estágio construído pelo (a) Estagiário (a) em conjunto com a Concedente e orientado por professor da Instituição de Ensino. 
           Parágrafo primeiro: O Plano de Atividade de Estágio – PAE está anexo ao Termo de Compromisso de Estágio. 
           CLÁUSULA TERCEIRA. Fica compromissado entre as partes que:
-          I - As atividades do Estágio a serem cumpridas pelo (a) Estagiário (a) serão no horário das ${dadosEstagio.entrada || "____"} às ${dadosEstagio.saida || "___ "} horas, com intervalo das refeições das ${dadosEstagio.refeicao || "___ "}horas, de 2ª a 6ª feira, perfazendo  ${dadosEstagio.semana || "____"}  horas semanais; 
+          I - As atividades do Estágio a serem cumpridas pelo (a) Estagiário (a) serão no horário das ${dadosEstagioInfo.horas_entrada || "____"} às ${dadosEstagioInfo.horas_saida || "___ "} horas, com intervalo das refeições das ${dadosEstagioInfo.horas_refeicao || "___ "}horas, de 2ª a 6ª feira, perfazendo  ${dadosEstagioInfo.horas_semanais || "____"}  horas semanais; 
           II - A jornada de atividade do (a) Estagiário (a) deverá compatibilizar-se com o horário escolar do (a) Estagiário (a) e com o horário da Concedente; 
-          III - Este Termo de Compromisso terá vigência de  ${dadosEstagio.dataIncial || "____"} a  ${dadosEstagio.dataFinal || "____"}, podendo ser denunciado a qualquer tempo, por qualquer das três partes envolvidas, unilateralmente, mediante comunicação escrita, com antecedência mínima de 5 (cinco) dias; 
-          IV-     O (A) Estagiário (a) receberá da concedente durante o período de estágio, uma bolsa no valor de R$ ${dadosEstagio.valor || "____"} e auxílio transporte, conforme acordado entre as partes;  
+          III - Este Termo de Compromisso terá vigência de  ${dadosSolicitacaoEstagio.data_inicial_estagio || "____"} a  ${dadosSolicitacaoEstagio.data_final_estagio || "____"}, podendo ser denunciado a qualquer tempo, por qualquer das três partes envolvidas, unilateralmente, mediante comunicação escrita, com antecedência mínima de 5 (cinco) dias; 
+          IV-     O (A) Estagiário (a) receberá da concedente durante o período de estágio, uma bolsa no valor de R$ ${dadosEstagioInfo.valor || "____"} e auxílio transporte, conforme acordado entre as partes;  
           V - Nos períodos em que a instituição de ensino adotar verificações de aprendizagem periódica ou final, a carga horária do estágio será reduzida pelo menos à metade para garantir o bom desempenho do estudante, conforme o art. 10, § 2º da Lei de Estágio;
           VI - A duração do estágio, na mesma parte concedente, não poderá exceder 2 (dois) anos, exceto quando se tratar de estagiário com deficiência, conforme art. 11 da Lei de Estágio;
           VII - O Estágio não pode, em qualquer hipótese, se estender após a conclusão do Curso Superior de Tecnologia.
@@ -119,7 +125,7 @@ const GerarPDF = () => {
           CLÁUSULA SEXTA. Caberá à INSTITUIÇÃO DE ENSINO: 
           I - Estabelecer critérios para a realização do Estágio Supervisionado, seu acompanhamento e avaliação bem como encaminhá-los à Concedente; 
           II - Planejar o estágio, orientar, supervisionar e avaliar o (a) Estagiário (a), parcialmente e ao final do estágio.
-          CLÁUSULA SÉTIMA. A Concedente se obriga a fazer o Seguro de Acidentes Pessoais ocorridos nos locais de estágio, conforme legislação vigente, de acordo com a Apólice de Seguro nº __________, da Seguradora ___________________, nos termos do Artigo 9º Inciso IV da Lei 11.788/08.
+          CLÁUSULA SÉTIMA. A Concedente se obriga a fazer o Seguro de Acidentes Pessoais ocorridos nos locais de estágio, conforme legislação vigente, de acordo com a Apólice de Seguro nº ${dadosEstagioInfo.numero_apolice || "___ "}, da Seguradora ${dadosEstagioInfo.seguradora || "___ "}, nos termos do Artigo 9º Inciso IV da Lei 11.788/08.
           CLÁUSULA OITAVA. Constituem motivo para a rescisão automática do presente Termo de Compromisso: 
           I - A conclusão, abandono ou mudança de Curso, ou trancamento de matrícula do (a) Estagiário (a); 
           II - O não cumprimento do convencionado neste Termo de Compromisso; 
@@ -138,11 +144,11 @@ const GerarPDF = () => {
     
     
           _________________________________
-          ${dadosEstagio.nomeDoAluno}
+          ${dadosAluno.nome_do_aluno}
     
     
           _________________________________
-          ${dadosEstagio.superior }
+          ${dadosEmpresa.nome_representante}
     
     
           _________________________________

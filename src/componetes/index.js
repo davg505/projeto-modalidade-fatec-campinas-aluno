@@ -15,4 +15,6 @@ export * from './menuRetravelModalidades';
 export * from './rodape';
 export * from './tabelaAluno';
 export * from './TabelaModalidadesEstagio';
+export * from './menuRetravelModalidadesic';
+export * from './menuRetravelModalidadesep';
 

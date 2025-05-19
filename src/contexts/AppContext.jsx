@@ -16,7 +16,7 @@ export const AppContextProvider = (props) => {
     const [iconesAluno] = useState([
         { id: 1, sigla: 'E', nome:'Estagio', link: '/estagio', texto:'Estagio' },
         { id: 2, sigla: 'IC', nome:'I.Cientifica', link: '/iniciacaocientifica' , texto:'Iniciação Cientifica' },
-        { id: 3, sigla: 'EP', nome:'E.Profissional' , link: '/estagio', texto:'Equivalencia Profissional'},
+        { id: 3, sigla: 'EP', nome:'E.Profissional' , link: '/eprofissional', texto:'Equivalencia Profissional'},
         { id: 4, sigla: 'MA', nome:'Avisos', link: '/avisos', texto:'Avisos' },
         { id: 5, sigla: 'MD', nome:'Dados',  link: '/dados', texto:'Meus dados' },
         { id: 6, sigla: 'T', nome:'Tutorial',  link: '/tutorial', texto:'Tutorial' },
@@ -34,6 +34,27 @@ export const AppContextProvider = (props) => {
         { id: 8, sigla: 'FA', nome:'F.Avaliação',  texto:'Ficha de avaliação'  },
         { id: 9, sigla: 'FE', nome:'F.Estágio',  texto:'Finalização do Estágio' },
     
+    ]);
+
+
+    const [iconesIc] = useState([
+        { id: 1, sigla: 'SIC', nome:'S.I.Cientifica',  texto:'Solicitar IC' },
+        { id: 3, sigla: 'CIC', nome:'C.I.Cientifica' ,  texto:'Cancelar IC'},
+        { id: 4, sigla: 'CA', nome:'Carta' ,  texto:'Carta apresentação do Orientador e do Projeto de Iniciação Científica' },
+        { id: 5, sigla: 'CIC', nome:'C.A.O IC' ,  texto:'Carta Avaliação Orientador IC' },
+        { id: 6, sigla: 'RE', nome:'Relatórios ',  texto:'Relatórios' },
+        { id: 7, sigla: 'RQ', nome:'R. Equivalência ',  texto:'Requerimento de equivalências' },
+
+    ]);
+
+    const [iconesEp] = useState([
+        { id: 1, sigla: 'SEP', nome:'S.E.Profissional',  texto:'Solicitar EP' },
+        { id: 3, sigla: 'CEP', nome:'C.E.Profissional' ,  texto:'Cancelar EP'},
+        { id: 4, sigla: 'CA', nome:'Carta Atividade' ,  texto:'Carta descrição atividades de trabalho' },
+        { id: 5, sigla: 'VT', nome:'Vínculo' ,  texto:'Comprovação vínculo trabalho' },
+        { id: 6, sigla: 'RE', nome:'Relatórios ',  texto:'Relatórios' },
+        { id: 7, sigla: 'RQ', nome:'R. Equivalência ',  texto:'Requerimento de equivalências' },
+
     ]);
 
 
@@ -360,6 +381,8 @@ export const AppContextProvider = (props) => {
                     iconesEstagio,
                     tabelaAluno,
                     tabelaEstagio,
+                    iconesIc,
+                    iconesEp,
                     adicionarSolicitacaoEstagio,
                     carregarTabelaAluno,
                     carregarDadosEstagio,
