@@ -42,8 +42,7 @@ export const AppContextProvider = (props) => {
         { id: 3, sigla: 'CIC', nome:'C.I.Cientifica' ,  texto:'Cancelar IC'},
         { id: 4, sigla: 'CA', nome:'Carta' ,  texto:'Carta apresentação do Orientador e do Projeto de Iniciação Científica' },
         { id: 5, sigla: 'CIC', nome:'C.A.O IC' ,  texto:'Carta Avaliação Orientador IC' },
-        { id: 6, sigla: 'RE', nome:'Relatórios ',  texto:'Relatórios' },
-        { id: 7, sigla: 'RQ', nome:'R. Equivalência ',  texto:'Requerimento de equivalências' },
+        { id: 6, sigla: 'RE', nome:'Relatório ',  texto:'Relatórios' },
 
     ]);
 

@@ -189,9 +189,85 @@ apiService.interceptors.request.use((config) => {
       };
 
 
-     
+      // Solicitação iniciar I cientifica -fazer
+      export const solicitacaoInicalIc = async (dados) => {
+  try {
+    // Verifique os dados antes de enviar
+    console.log('Dados enviados:', dados);
+
+    // Validação básica com os nomes corretos das chaves
+    if (
+      !dados.instituicao_centro_pesquisa ||
+      !dados.tema ||
+      !dados.data_inicial ||
+      !dados.data_final ||
+      !dados.orientador
+    ) {
+      throw new Error('Campos obrigatórios estão faltando.');
+    }
+
+    const response = await apiService.post('/solicitacao_ic', {
+      instituicao_centro_pesquisa: dados.instituicao_centro_pesquisa,
+      tema: dados.tema,
+      data_inicial: dados.data_inicial,
+      data_final: dados.data_final,
+      orientador: dados.orientador,
+      horario: dados.horario || '',
+      dias_da_semana: dados.dias_da_semana || '',
+      descricao_atividade: dados.descricao_atividade || '',
+    });
+
+    console.log('Solicitação enviada com sucesso:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao solicitar IC:', error.message || error);
+    throw error;
+  }
+};
 
 
+       // Cancelar IC- fazer
+      export const CancelarSolicitacaoIc = async (dados) => {
+        try {
+        const response = await apiService.put('/cancelar_ic_aluno');
+        return response.data; // Isso será o aluno retornado do back-end
+      } catch (error) {
+        console.error('Erro ao buscar dados estagio info:', error);
+        throw error;
+      }
+      };
+
+      export const CriarCartaApresIc = async (dados) => {
+        try {
+        const response = await apiService.post('/cartaApresIC');
+        return response.data; // Isso será o aluno retornado do back-end
+      } catch (error) {
+        console.error('Erro ao buscar dados estagio info:', error);
+        throw error;
+      }
+      };
+
+      export const relatorioFinal = async (dados) => {
+        try {
+        const response = await apiService.post('/cartaApresIC');
+        return response.data; // Isso será o aluno retornado do back-end
+      } catch (error) {
+        console.error('Erro ao buscar dados estagio info:', error);
+        throw error;
+      }
+      };
+
+       export const CriarCartaAvalIc = async (dados) => {
+        try {
+        const response = await apiService.post('/cartaApresIC');
+        return response.data; // Isso será o aluno retornado do back-end
+      } catch (error) {
+        console.error('Erro ao buscar dados estagio info:', error);
+        throw error;
+      }
+      };
+      
 
 
+    
 

@@ -2,26 +2,28 @@ import { useState } from "react";
 import { UseAppContext } from "../../hooks";
 import { Api } from '../../services/Api';
 import { Icone } from "../icone";
-import { JanelaNoObrigatorio } from "../janelaNoObrigatorio";
-import { JanelaPPeriodo } from "../JanelaPPeriodo";
-import { JanelaRTermo } from "../janelaRTermo/JanelaRTermo";
-import SolicitarEstagio from "../solicitarEstagio/SolicitarEstagio";
 import style from './MenuRetravelModalidadesic.module.css';
 import { TitulosIcones } from "./titulosIcones";
+import SolicitarIc from "../solicitarIc/SolicitarIc";
+import CartaApresentacao from "../cartaApresentacaoic/cartaApresentacao";
+import CartaAvaliacao from "../CartaAvaliacaoic/CartaAvaliacao";
+import RelatorioIc from "../relatoriosic/RelatorioIc";
+import CancelarIc from "../cancelarSolicitacao/CancelarIc";
+import {buscarDadosAluno} from '../../services/apiService';
+
 
 // eslint-disable-next-line react/prop-types
 export const MenuRetravelModalidadeic = () => {
     const { iconesIc, cancelarSolicitacaoEstagio } = UseAppContext();
     const [showSolicitarEstagio, setShowSolicitarEstagio] = useState(false);
-    const [showProrrogacaoDePeriodo, setShowProrrogacaoDePeriodo] = useState(false);
-    const [showNoObrigatorio, setShowNoObrigatorio] = useState(false);
-    const [showRescisaoTermo, setShowshowRescisaoTermo] = useState(false);
-
-  
+    const [showCancelar, setShowCancelar] = useState(false);
+    const [showCartaApresentacao, setshowCartaApresentacao] = useState(false);
+    const [showCartaAvaliacao, setshowCartaAvaliacao] = useState(false);
+    const [showRelatorios, setshowRelatorios] = useState(false);
 
     const iconesInicio = iconesIc.filter(item => item.id === 1 || item.id === 3);
     const iconesDurante = iconesIc.filter(item => item.id === 4);
-    const iconesFinal = iconesIc.filter(item => item.id === 5 || item.id === 6 || item.id === 7);
+    const iconesFinal = iconesIc.filter(item => item.id === 5 || item.id === 6);
 
     const handleOpenSolicitarEstagio = async () => {
         try {
@@ -39,47 +41,71 @@ export const MenuRetravelModalidadeic = () => {
 
     const handleCloseSolicitarEstagio = () => {
         setShowSolicitarEstagio(false); 
-        setShowProrrogacaoDePeriodo(false);// Fecha a janela
-        setShowNoObrigatorio(false);
-        setShowshowRescisaoTermo(false);
+        setShowCancelar(false); 
+        setshowCartaApresentacao(false);// Fecha a janela
+        setshowCartaAvaliacao(false);
+        setshowRelatorios(false);
+        
     };
     const handleSubmitEstagio = (data) => {
         console.log("Dados do estágio enviados:", data);
         setShowSolicitarEstagio(false); // Fecha a janela após o envio
-        setShowProrrogacaoDePeriodo(false);
-        setShowNoObrigatorio(false);
-        setShowshowRescisaoTermo(false);
+        setShowCancelar(false); 
+        setshowCartaApresentacao(false);// Fecha a janela
+        setshowCartaAvaliacao(false);
+        setshowRelatorios(false);
+       
     };
 
 
 
      // Aqui faza verificação do status do usuario 
-        const handleOpenCancelarEstagio = async () => {
-        try {
-            const { data } = await Api.get('/aluno');
-            const aluno = data[0]; 
-            if (aluno.status === 'Sem solicitação') {
-                alert(`Não tem solicitaçao vigente`);
-            }  else if (aluno.status === 'Enviado Solicitação') { 
-                cancelarSolicitacaoEstagio();
-                alert(`A Solicitação Cancelada`);
-            } else {
-                alert(`Status cancelado ou outra ação: ${aluno.status}`);
+       const handleOpenCancelarEstagio = async () => {
+            try {
+                const aluno = await buscarDadosAluno();
+
+                if (!aluno) {
+                    alert('Dados do aluno não encontrados.');
+                    return;
+                }
+
+                if (aluno.modalidade !== 'I. Cientifica') {
+                    alert('O cancelamento só é permitido para alunos com modalidade "I. Cientifica".');
+                    return;
+                }
+
+                if (aluno.status === 'Sem solicitação') {
+                    alert('Não há solicitação vigente.');
+                } else if (aluno.modalidade === 'I. Cientifica') {
+                    setShowCancelar(true); // <- MOSTRA O MODAL DE CANCELAMENTO
+                } else {
+                    alert(`Status não elegível para cancelamento: ${aluno.status}`);
+                }
+            } catch (error) {
+                console.error('Erro ao verificar o status do aluno:', error);
+                alert('Erro ao verificar o status do aluno.');
             }
-        } catch (error) {
-            console.error('Erro ao verificar o status do aluno:', error);
-        }
-    };
+        };
 
     // Prorrogação de período do estagio
-    const handleOpenProrrogacaoDePeriodo = async () => {
+    const handleOpenCartaApresentacao = async () => {
         try {
-            const { data } = await Api.get('/aluno');
-            const aluno = data[0]; 
-            if (aluno.status === 'Sem solicitação' || aluno.status === 'Cancelado Solicitação') {
-                setShowProrrogacaoDePeriodo(true); 
+            const aluno = await buscarDadosAluno();
+
+              if (!aluno) {
+                    alert('Dados do aluno não encontrados.');
+                    return;
+                }
+
+             if (aluno.modalidade !== 'I. Cientifica') {
+                    alert('O cancelamento só é permitido para alunos com modalidade "I. Cientifica".');
+                    return;
+                }
+        
+            if (aluno.modalidade === 'I. Cientifica' ) {
+                setshowCartaApresentacao(true); 
             } else {
-                alert(`A solicitação não pode ser feita. Status atual: ${aluno.status}`);
+                alert(`A solicitação não pode ser feita. Status atual: ${aluno.modalidade}`);
             }
         } catch (error) {
             console.error('Erro ao verificar o status do aluno:', error);
@@ -87,41 +113,61 @@ export const MenuRetravelModalidadeic = () => {
     };
 
         // TERMO ADITIVO - Estágio não obrigatório para obrigatório
-        const handleOpenNObrigatório = async () => {
+        const handleOpenCartaAvaliacao = async () => {
             try {
-                const { data } = await Api.get('/aluno');
-                const aluno = data[0]; 
-                if (aluno.status === 'Sem solicitação' || aluno.status === 'Cancelado Solicitação') {
-                    setShowNoObrigatorio(true); 
-                } else {
-                    alert(`A solicitação não pode ser feita. Status atual: ${aluno.status}`);
-                }
-            } catch (error) {
-                console.error('Erro ao verificar o status do aluno:', error);
-            }
-        };
+                    const aluno = await buscarDadosAluno();
 
-                // RESCISÃO DE TERMO DE COMPROMISSO DE ESTÁGIO
-                const handleOpenRescisaoDoTermo = async () => {
-                    try {
-                        const { data } = await Api.get('/aluno');
-                        const aluno = data[0]; 
-                        if (aluno.status === 'Sem solicitação' || aluno.status === 'Cancelado Solicitação') {
-                            setShowshowRescisaoTermo(true); 
+                        if (!aluno) {
+                                alert('Dados do aluno não encontrados.');
+                                return;
+                            }
+
+                        if (aluno.modalidade !== 'I. Cientifica') {
+                                alert('O cancelamento só é permitido para alunos com modalidade "I. Cientifica".');
+                                return;
+                            }
+                    
+                        if (aluno.modalidade === 'I. Cientifica' ) {
+                            setshowCartaAvaliacao(true); 
                         } else {
-                            alert(`A solicitação não pode ser feita. Status atual: ${aluno.status}`);
+                            alert(`A solicitação não pode ser feita. Status atual: ${aluno.modalidade}`);
                         }
                     } catch (error) {
                         console.error('Erro ao verificar o status do aluno:', error);
                     }
                 };
 
+                // RESCISÃO DE TERMO DE COMPROMISSO DE ESTÁGIO
+                const handleOpenRelatorioIc = async () => {
+                            try {
+                            const aluno = await buscarDadosAluno();
+
+                    if (!aluno) {
+                            alert('Dados do aluno não encontrados.');
+                            return;
+                        }
+
+                    if (aluno.modalidade !== 'I. Cientifica') {
+                            alert('O cancelamento só é permitido para alunos com modalidade "I. Cientifica".');
+                            return;
+                        }
+                
+                    if (aluno.modalidade === 'I. Cientifica' ) {
+                        setshowRelatorios(true); 
+                    } else {
+                        alert(`A solicitação não pode ser feita. Status atual: ${aluno.modalidade}`);
+                    }
+                } catch (error) {
+                    console.error('Erro ao verificar o status do aluno:', error);
+        }
+                };
+
     const actions = {
         1: handleOpenSolicitarEstagio,
         3: handleOpenCancelarEstagio,
-        4: handleOpenProrrogacaoDePeriodo,
-        5: handleOpenNObrigatório,
-        6: handleOpenRescisaoDoTermo,
+        4: handleOpenCartaApresentacao,
+        5: handleOpenCartaAvaliacao,
+        6: handleOpenRelatorioIc,
     };
 
     const handleClick = (id) => {
@@ -170,28 +216,36 @@ export const MenuRetravelModalidadeic = () => {
                                     id={item.id}
                                     sigla={item.sigla}
                                     nome={item.nome}
+                                    onClick={() => handleClick(item.id)} // <- Correção aqui
                                 />
                             ))}
                         </div>
                     </div>
                 </div>
-            <SolicitarEstagio
+            <SolicitarIc
                 show={showSolicitarEstagio}
                 handleClose={handleCloseSolicitarEstagio}
                 handleSubmit={handleSubmitEstagio}
             />
-            <JanelaPPeriodo
-                show={showProrrogacaoDePeriodo}
+
+            <CancelarIc
+                show={showCancelar}
                 handleClose={handleCloseSolicitarEstagio}
                 handleSubmit={handleSubmitEstagio}
             />
-            <JanelaNoObrigatorio 
-                show={showNoObrigatorio}
+
+            <CartaApresentacao
+                show={showCartaApresentacao}
                 handleClose={handleCloseSolicitarEstagio}
                 handleSubmit={handleSubmitEstagio}
             />
-            <JanelaRTermo
-                show={showRescisaoTermo}
+            <CartaAvaliacao
+                show={showCartaAvaliacao}
+                handleClose={handleCloseSolicitarEstagio}
+                handleSubmit={handleSubmitEstagio}
+            />
+            <RelatorioIc
+                show={showRelatorios}
                 handleClose={handleCloseSolicitarEstagio}
                 handleSubmit={handleSubmitEstagio}
 

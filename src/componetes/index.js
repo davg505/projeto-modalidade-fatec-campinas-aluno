@@ -17,4 +17,8 @@ export * from './tabelaAluno';
 export * from './TabelaModalidadesEstagio';
 export * from './menuRetravelModalidadesic';
 export * from './menuRetravelModalidadesep';
-
+export * from './cancelarSolicitacao';
+export * from './CartaApresentacaoic';
+export * from  './CartaAvaliacaoic';
+export * from './Relatoriosic';
+export * from './abasDasSolicitacoesIC';
