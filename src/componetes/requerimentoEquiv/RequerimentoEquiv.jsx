@@ -1,38 +1,38 @@
-import { useState } from "react";
-import { criarCartaAvalIc } from '../../services/apiService';
+import { useState } from "react"; 
+import { requerimentoEquivEp } from '../../services/apiService';
 import { jsPDF } from "jspdf";
-import style from "./CartaAvaliacao.module.css";
+import style from "./RequerimentoEquiv.module.css";
 
-const CartaAvaliacao = ({ show, handleClose, handleSubmit }) => {
+const RequerimentoEquiv = ({ show, handleClose, handleSubmit }) => {
   const [loading, setLoading] = useState(false);
 
   const gerarEPDFEnviar = async () => {
     setLoading(true);
 
-    // 1. Criar o PDF usando jsPDF
+    // 1. Criar o PDF com jsPDF
     const doc = new jsPDF();
 
     doc.setFontSize(16);
-    doc.text("Carta de Avaliação", 20, 20);
+    doc.text("Requerimento de equivalências E. Profissional", 20, 20);
     doc.setFontSize(12);
-    doc.text("Esta é a carta de avaliação do Orientador da Iniciação Científica.", 20, 40);
+    doc.text("Esta é a Requerimento de equivalências E. Profissional.", 20, 40);
 
     // Gerar blob do PDF
     const pdfBlob = doc.output("blob");
 
     // 2. Criar FormData para envio
     const formData = new FormData();
-    formData.append("arquivo", pdfBlob, "CartaAvaliacao.pdf");
+    formData.append("arquivo", pdfBlob, "Requerimentoequivalências.pdf");
 
     try {
-      // 3. Enviar o PDF para o backend
-      const response = await criarCartaAvalIc(formData);
+      // 3. Enviar o FormData para backend via API
+      const response = await requerimentoEquivEp(formData);
 
-      // 4. Opcional: baixar PDF localmente
+      // 4. Opcional: baixar o PDF localmente no browser
       const url = window.URL.createObjectURL(pdfBlob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "CartaAvaliacao.pdf";
+      a.download = "Requerimentoequivalências.pdf";
       a.click();
       window.URL.revokeObjectURL(url);
 
@@ -51,8 +51,8 @@ const CartaAvaliacao = ({ show, handleClose, handleSubmit }) => {
   return (
     <div className={style.modalBackground}>
       <div className={style.modalContainer}>
-        <h2>Carta Avaliação I. Científica</h2>
-        <p>Deseja realmente criar a Carta Avaliação Orientador I. Científica?</p>
+        <h2>Requerimento de equivalências E. Profissional</h2>
+        <p>Deseja realmente criar a Requerimento de equivalências E. Profissional?</p>
 
         <div className={style.buttonsContainer}>
           <button className={style.button} onClick={gerarEPDFEnviar} disabled={loading}>
@@ -67,4 +67,4 @@ const CartaAvaliacao = ({ show, handleClose, handleSubmit }) => {
   );
 };
 
-export default CartaAvaliacao;
+export default RequerimentoEquiv;

@@ -2,20 +2,26 @@ import { useState } from "react";
 import { UseAppContext } from "../../hooks";
 import { Api } from '../../services/Api';
 import { Icone } from "../icone";
-import { JanelaNoObrigatorio } from "../janelaNoObrigatorio";
-import { JanelaPPeriodo } from "../JanelaPPeriodo";
-import { JanelaRTermo } from "../janelaRTermo/JanelaRTermo";
-import SolicitarEstagio from "../solicitarEstagio/SolicitarEstagio";
+import SolicitarEp from "../solicitarEp/SolicitarEp";
+import CancelarEp from "../cancelarEp/CancelarEp";
+import RequerimentoEquiv from "../requerimentoEquiv/RequerimentoEquiv";
+import RelatorioEp from "../relatorioEp/RelatorioEp";
+import ComprovacaoVinc from "../comprovacaoVinc/ComprovacaoVinc";
+import CartaDescricaoAtividades from "../cartaDescricaoAtividades/CartaDescricaoAtividades";
+
 import style from './MenuRetravelModalidadesep.module.css';
 import { TitulosIcones } from "./titulosIcones";
+import {buscarDadosAluno} from '../../services/apiService';
 
 // eslint-disable-next-line react/prop-types
 export const MenuRetravelModalidadesep = () => {
     const { iconesEp, cancelarSolicitacaoEstagio } = UseAppContext();
-    const [showSolicitarEstagio, setShowSolicitarEstagio] = useState(false);
-    const [showProrrogacaoDePeriodo, setShowProrrogacaoDePeriodo] = useState(false);
-    const [showNoObrigatorio, setShowNoObrigatorio] = useState(false);
-    const [showRescisaoTermo, setShowshowRescisaoTermo] = useState(false);
+    const [showSolicitarEp, setShowSolicitarEp] = useState(false);
+    const [showCancelar, setShowCancelar] = useState(false);
+    const [showRequerimentoEquiv, setShowRequerimentoEquiv] = useState(false);
+    const [showRelatorioEp, setShowRelatorioEp] = useState(false);
+    const [showComprovacaoVinc, setShowComprovacaoVinc] = useState(false);
+    const [showCartaDescricaoAtividades, setShowCartaDescricaoAtividades] = useState(false);
 
   
 
@@ -27,7 +33,7 @@ export const MenuRetravelModalidadesep = () => {
             const { data } = await Api.get('/aluno');
             const aluno = data[0]; 
             if (aluno.status === 'Sem solicitação' || aluno.status === 'Cancelado Solicitação') {
-                setShowSolicitarEstagio(true); 
+                setShowSolicitarEp(true); 
             } else {
                 alert(`A solicitação não pode ser feita. Status atual: ${aluno.status}`);
             }
@@ -37,90 +43,162 @@ export const MenuRetravelModalidadesep = () => {
     };
 
     const handleCloseSolicitarEstagio = () => {
-        setShowSolicitarEstagio(false); 
-        setShowProrrogacaoDePeriodo(false);// Fecha a janela
-        setShowNoObrigatorio(false);
-        setShowshowRescisaoTermo(false);
+        setShowSolicitarEp(false); 
+        setShowCancelar(false);// Fecha a janela
+        setShowRequerimentoEquiv(false);
+        setShowRelatorioEp(false);
+        setShowComprovacaoVinc(false);
+        setShowCartaDescricaoAtividades(false);
     };
     const handleSubmitEstagio = (data) => {
         console.log("Dados do estágio enviados:", data);
-        setShowSolicitarEstagio(false); // Fecha a janela após o envio
-        setShowProrrogacaoDePeriodo(false);
-        setShowNoObrigatorio(false);
-        setShowshowRescisaoTermo(false);
+        setShowSolicitarEp(false); 
+        setShowCancelar(false);// Fecha a janela
+        setShowRequerimentoEquiv(false);
+        setShowRelatorioEp(false);
+        setShowComprovacaoVinc(false);
+        setShowCartaDescricaoAtividades(false);
     };
 
 
 
      // Aqui faza verificação do status do usuario 
-        const handleOpenCancelarEstagio = async () => {
-        try {
-            const { data } = await Api.get('/aluno');
-            const aluno = data[0]; 
-            if (aluno.status === 'Sem solicitação') {
-                alert(`Não tem solicitaçao vigente`);
-            }  else if (aluno.status === 'Enviado Solicitação') { 
-                cancelarSolicitacaoEstagio();
-                alert(`A Solicitação Cancelada`);
-            } else {
-                alert(`Status cancelado ou outra ação: ${aluno.status}`);
-            }
-        } catch (error) {
-            console.error('Erro ao verificar o status do aluno:', error);
-        }
-    };
+        const handleOpenCancelarEp = async () => {
+         try {
+                        const aluno = await buscarDadosAluno();
+        
+                        if (!aluno) {
+                            alert('Dados do aluno não encontrados.');
+                            return;
+                        }
+        
+                        if (aluno.modalidade !== 'E. Profissional') {
+                            alert('O cancelamento só é permitido para alunos com modalidade "E. Profissional".');
+                            return;
+                        }
+        
+                        if (aluno.status === 'Sem solicitação') {
+                            alert('Não há solicitação vigente.');
+                        } else if (aluno.modalidade === 'E. Profissional') {
+                            setShowCancelar(true); // <- MOSTRA O MODAL DE CANCELAMENTO
+                        } else {
+                            alert(`Status não elegível para cancelamento: ${aluno.status}`);
+                        }
+                    } catch (error) {
+                        console.error('Erro ao verificar o status do aluno:', error);
+                        alert('Erro ao verificar o status do aluno.');
+                    }
+                };
+        
 
     // Prorrogação de período do estagio
-    const handleOpenProrrogacaoDePeriodo = async () => {
-        try {
-            const { data } = await Api.get('/aluno');
-            const aluno = data[0]; 
-            if (aluno.status === 'Sem solicitação' || aluno.status === 'Cancelado Solicitação') {
-                setShowProrrogacaoDePeriodo(true); 
-            } else {
-                alert(`A solicitação não pode ser feita. Status atual: ${aluno.status}`);
-            }
-        } catch (error) {
-            console.error('Erro ao verificar o status do aluno:', error);
-        }
-    };
+    const handleOpenRequerimentoEquiv = async () => {
+         try {
+                    const aluno = await buscarDadosAluno();
 
-        // TERMO ADITIVO - Estágio não obrigatório para obrigatório
-        const handleOpenNObrigatório = async () => {
-            try {
-                const { data } = await Api.get('/aluno');
-                const aluno = data[0]; 
-                if (aluno.status === 'Sem solicitação' || aluno.status === 'Cancelado Solicitação') {
-                    setShowNoObrigatorio(true); 
-                } else {
-                    alert(`A solicitação não pode ser feita. Status atual: ${aluno.status}`);
-                }
-            } catch (error) {
-                console.error('Erro ao verificar o status do aluno:', error);
-            }
-        };
+                        if (!aluno) {
+                                alert('Dados do aluno não encontrados.');
+                                return;
+                            }
 
-                // RESCISÃO DE TERMO DE COMPROMISSO DE ESTÁGIO
-                const handleOpenRescisaoDoTermo = async () => {
-                    try {
-                        const { data } = await Api.get('/aluno');
-                        const aluno = data[0]; 
-                        if (aluno.status === 'Sem solicitação' || aluno.status === 'Cancelado Solicitação') {
-                            setShowshowRescisaoTermo(true); 
+                        if (aluno.modalidade !== 'E. Profissional') {
+                                alert('O cancelamento só é permitido para alunos com modalidade "E. Profissional".');
+                                return;
+                            }
+                    
+                        if (aluno.modalidade === 'E. Profissional' ) {
+                            setShowRequerimentoEquiv(true); 
                         } else {
-                            alert(`A solicitação não pode ser feita. Status atual: ${aluno.status}`);
+                            alert(`A solicitação não pode ser feita. Status atual: ${aluno.modalidade}`);
                         }
                     } catch (error) {
                         console.error('Erro ao verificar o status do aluno:', error);
                     }
                 };
 
+    const  handleOpenRelatorioEp = async () => {
+         try {
+                    const aluno = await buscarDadosAluno();
+
+                        if (!aluno) {
+                                alert('Dados do aluno não encontrados.');
+                                return;
+                            }
+
+                        if (aluno.modalidade !== 'E. Profissional') {
+                                alert('O cancelamento só é permitido para alunos com modalidade "E. Profissional".');
+                                return;
+                            }
+                    
+                        if (aluno.modalidade === 'E. Profissional' ) {
+                            setShowRelatorioEp(true); 
+                        } else {
+                            alert(`A solicitação não pode ser feita. Status atual: ${aluno.modalidade}`);
+                        }
+                    } catch (error) {
+                        console.error('Erro ao verificar o status do aluno:', error);
+                    }
+                };
+
+    const handleOpenComprovacaoVinc = async () => {
+         try {
+                    const aluno = await buscarDadosAluno();
+
+                        if (!aluno) {
+                                alert('Dados do aluno não encontrados.');
+                                return;
+                            }
+
+                        if (aluno.modalidade !== 'E. Profissional') {
+                                alert('O cancelamento só é permitido para alunos com modalidade "E. Profissional".');
+                                return;
+                            }
+                    
+                        if (aluno.modalidade === 'E. Profissional' ) {
+                            setShowComprovacaoVinc(true); 
+                        } else {
+                            alert(`A solicitação não pode ser feita. Status atual: ${aluno.modalidade}`);
+                        }
+                    } catch (error) {
+                        console.error('Erro ao verificar o status do aluno:', error);
+                    }
+                };
+
+    const  handleOpenCartaDescricaoAtividades = async () => {
+         try {
+                    const aluno = await buscarDadosAluno();
+
+                        if (!aluno) {
+                                alert('Dados do aluno não encontrados.');
+                                return;
+                            }
+
+                        if (aluno.modalidade !== 'E. Profissional') {
+                                alert('O cancelamento só é permitido para alunos com modalidade "E. Profissional".');
+                                return;
+                            }
+                    
+                        if (aluno.modalidade === 'E. Profissional' ) {
+                            setShowCartaDescricaoAtividades(true); 
+                        } else {
+                            alert(`A solicitação não pode ser feita. Status atual: ${aluno.modalidade}`);
+                        }
+                    } catch (error) {
+                        console.error('Erro ao verificar o status do aluno:', error);
+                    }
+                };
+
+        
+
+              
+
     const actions = {
         1: handleOpenSolicitarEstagio,
-        3: handleOpenCancelarEstagio,
-        4: handleOpenProrrogacaoDePeriodo,
-        5: handleOpenNObrigatório,
-        6: handleOpenRescisaoDoTermo,
+        3: handleOpenCancelarEp,
+        4: handleOpenRequerimentoEquiv,
+        5: handleOpenRelatorioEp,
+        6: handleOpenComprovacaoVinc,
+        7: handleOpenCartaDescricaoAtividades,
     };
 
     const handleClick = (id) => {
@@ -163,26 +241,40 @@ export const MenuRetravelModalidadesep = () => {
                         </div>
                     </div>
                 </div>
-            <SolicitarEstagio
-                show={showSolicitarEstagio}
+            <SolicitarEp
+                show={showSolicitarEp}
                 handleClose={handleCloseSolicitarEstagio}
                 handleSubmit={handleSubmitEstagio}
             />
-            <JanelaPPeriodo
-                show={showProrrogacaoDePeriodo}
-                handleClose={handleCloseSolicitarEstagio}
-                handleSubmit={handleSubmitEstagio}
-            />
-            <JanelaNoObrigatorio 
-                show={showNoObrigatorio}
-                handleClose={handleCloseSolicitarEstagio}
-                handleSubmit={handleSubmitEstagio}
-            />
-            <JanelaRTermo
-                show={showRescisaoTermo}
-                handleClose={handleCloseSolicitarEstagio}
-                handleSubmit={handleSubmitEstagio}
 
+            <CancelarEp
+                show={showCancelar}
+                handleClose={handleCloseSolicitarEstagio}
+                handleSubmit={handleSubmitEstagio}
+            />
+
+            <RequerimentoEquiv
+                show={showRequerimentoEquiv}
+                handleClose={handleCloseSolicitarEstagio}
+                handleSubmit={handleSubmitEstagio}
+            />
+
+            <RelatorioEp
+                show={showRelatorioEp}
+                handleClose={handleCloseSolicitarEstagio}
+                handleSubmit={handleSubmitEstagio}
+            />
+
+            <ComprovacaoVinc
+                show={showComprovacaoVinc}
+                handleClose={handleCloseSolicitarEstagio}
+                handleSubmit={handleSubmitEstagio}
+            />
+
+            <CartaDescricaoAtividades
+                show={showCartaDescricaoAtividades}
+                handleClose={handleCloseSolicitarEstagio}
+                handleSubmit={handleSubmitEstagio}
             />
 
         </div>

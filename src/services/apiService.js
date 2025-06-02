@@ -2,8 +2,8 @@ import axios from 'axios';
 
 // Configuração base da API, adaptada ao seu back-end (ajuste a URL conforme necessário)
 const apiService = axios.create({
-  baseURL: 'http://localhost:3001/api',  // Endereço do back-end
-  //baseURL: 'https://backend-fatec.onrender.com/api',
+  //baseURL: 'http://localhost:3001/api',  // Endereço do back-end
+  baseURL: 'https://backend-fatec.onrender.com/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -190,7 +190,7 @@ apiService.interceptors.request.use((config) => {
 
 
       // Solicitação iniciar I cientifica -fazer
-      export const solicitacaoInicalIc = async (dados) => {
+  export const solicitacaoInicalIc = async (dados) => {
   try {
     // Verifique os dados antes de enviar
     console.log('Dados enviados:', dados);
@@ -247,9 +247,118 @@ apiService.interceptors.request.use((config) => {
       }
       };
 
-      export const relatorioFinal = async (dados) => {
+      export const relatorioFinal = async (file) => {
         try {
-        const response = await apiService.post('/cartaApresIC');
+          const formData = new FormData();
+          formData.append('arquivo', file);
+
+          // Cria axios separado SEM Content-Type JSON, para o upload de arquivo
+          const uploadResponse = await axios.post('https://backend-fatec.onrender.com/api/relatorioIC', formData, {
+            headers: {
+              // deixa o axios definir o content-type correto com boundary
+              // 'Content-Type': 'multipart/form-data' -> NÃO definir manualmente
+            },
+          });
+
+          return uploadResponse.data;
+        } catch (error) {
+          console.error('Erro ao enviar o relatório final:', error);
+          throw error;
+        }
+      };
+
+
+      //busca os dados do aluno 
+      export const buscarArquivos = async () => {
+        try {
+          const response = await axios.get('https://backend-fatec.onrender.com/api/arquivosAlunosIC', {
+            headers: {
+            },
+          });
+
+          return response.data;
+        } catch (error) {
+          console.error('Erro ao buscar dados do aluno:', error);
+          throw error;
+        }
+      };
+
+      export const criarCartaApresIc = async (formData) => {
+          try {
+            const response = await axios.post('https://backend-fatec.onrender.com/api/relatorioCartaApresIC', formData, {
+              headers: {
+                // NÃO defina manualmente Content-Type para multipart/form-data, o Axios faz isso automaticamente
+              },
+            });
+            return response.data;
+          } catch (error) {
+            console.error('Erro ao enviar carta apresentação:', error);
+            throw error;
+          }
+        };
+
+
+        export const criarCartaAvalIc = async (formData) => {
+         try {
+            const response = await axios.post('https://backend-fatec.onrender.com/api/relatorioCartaAvalIC', formData, {
+              headers: {
+                // NÃO defina manualmente Content-Type para multipart/form-data, o Axios faz isso automaticamente
+              },
+            });
+            return response.data;
+          } catch (error) {
+            console.error('Erro ao enviar carta apresentação:', error);
+            throw error;
+          }
+        };
+
+//ep 
+
+        // Solicitação iniciar I cientifica -fazer
+  export const solicitacaoInicalEp = async (dados) => {
+  try {
+    // Verifique os dados antes de enviar
+    console.log('Dados enviados:', dados);
+
+    // Validação básica com os nomes corretos das chaves
+    if (
+      !dados.nome_da_empresa ||
+      !dados.municipio_empresa ||
+      !dados.superior_imediato ||
+      !dados.tel ||
+      !dados.email ||
+      !dados.area_atuacao ||
+      !dados.data_incio_atuacao 
+   
+
+    ) {
+      throw new Error('Campos obrigatórios estão faltando.');
+    }
+
+    const response = await apiService.post('/solicitacao_ep', {
+      nome_da_empresa: dados.nome_da_empresa,
+      municipio_empresa: dados.municipio_empresa,
+      superior_imediato: dados.superior_imediato,
+      tel: dados.tel,
+      email: dados.email,
+      area_atuacao: dados.area_atuacao,
+      data_incio_atuacao: data_incio_atuacao,
+      descricao_atividade: dados.descricao_atividade || '',
+    });
+
+    console.log('Solicitação enviada com sucesso:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao solicitar Ep:', error.message || error);
+    throw error;
+  }
+};
+
+
+   // Cancelar IC- fazer
+      export const CancelarSolicitacaoEp = async (dados) => {
+        try {
+        const response = await apiService.put('/cancelar_ep_aluno');
         return response.data; // Isso será o aluno retornado do back-end
       } catch (error) {
         console.error('Erro ao buscar dados estagio info:', error);
@@ -257,17 +366,77 @@ apiService.interceptors.request.use((config) => {
       }
       };
 
-       export const CriarCartaAvalIc = async (dados) => {
+
+      export const relatorioFinalEp = async (file) => {
         try {
-        const response = await apiService.post('/cartaApresIC');
-        return response.data; // Isso será o aluno retornado do back-end
-      } catch (error) {
-        console.error('Erro ao buscar dados estagio info:', error);
-        throw error;
-      }
+          const formData = new FormData();
+          formData.append('arquivo', file);
+
+          // Cria axios separado SEM Content-Type JSON, para o upload de arquivo
+          const uploadResponse = await axios.post('https://backend-fatec.onrender.com/api/relatorioEP', formData, {
+            headers: {
+              // deixa o axios definir o content-type correto com boundary
+              // 'Content-Type': 'multipart/form-data' -> NÃO definir manualmente
+            },
+          });
+
+          return uploadResponse.data;
+        } catch (error) {
+          console.error('Erro ao enviar o relatório final:', error);
+          throw error;
+        }
       };
-      
+
+      export const comprovanteVincEp = async (file) => {
+        try {
+          const formData = new FormData();
+          formData.append('arquivo', file);
+
+          // Cria axios separado SEM Content-Type JSON, para o upload de arquivo
+          const uploadResponse = await axios.post('https://backend-fatec.onrender.com/api/comprovanteVinculEP', formData, {
+            headers: {
+              // deixa o axios definir o content-type correto com boundary
+              // 'Content-Type': 'multipart/form-data' -> NÃO definir manualmente
+            },
+          });
+
+          return uploadResponse.data;
+        } catch (error) {
+          console.error('Erro ao enviar o comprovante vinculo:', error);
+          throw error;
+        }
+      };
 
 
-    
+      export const criarCartaApresEp = async (formData) => {
+          try {
+            const response = await axios.post('https://backend-fatec.onrender.com/api/relatorioCartaApresEp', formData, {
+              headers: {
+                // NÃO defina manualmente Content-Type para multipart/form-data, o Axios faz isso automaticamente
+              },
+            });
+            return response.data;
+          } catch (error) {
+            console.error('Erro ao enviar carta apresentação:', error);
+            throw error;
+          }
+        };
+
+        export const requerimentoEquivEp = async (formData) => {
+          try {
+            const response = await axios.post('https://backend-fatec.onrender.com/api/requerimentoEquivEp', formData, {
+              headers: {
+                // NÃO defina manualmente Content-Type para multipart/form-data, o Axios faz isso automaticamente
+              },
+            });
+            return response.data;
+          } catch (error) {
+            console.error('Erro ao enviar carta apresentação:', error);
+            throw error;
+          }
+        };
+
+       
+
+
 

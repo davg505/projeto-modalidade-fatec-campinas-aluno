@@ -1,15 +1,49 @@
-import { CriarCartaApresIc } from '../../services/apiService';
-import style from "./CartaApresentacao.module.css"; // Importe o arquivo CSS
+import { useState } from "react"; 
+import { criarCartaApresIc } from '../../services/apiService';
+import { jsPDF } from "jspdf";
+import style from "./CartaApresentacao.module.css";
 
-// eslint-disable-next-line react/prop-types
 const CartaApresentacao = ({ show, handleClose, handleSubmit }) => {
+  const [loading, setLoading] = useState(false);
 
-  const onConfirmCancel = () => {
-    const solicitacao = {}; // Inclua os dados necessários aqui, se houver
+  const gerarEPDFEnviar = async () => {
+    setLoading(true);
 
-    CriarCartaApresIc(solicitacao); // Chama a função para cancelar a solicitação
-    handleSubmit?.(solicitacao); // Se necessário
-    handleClose(); // Fecha o modal após o envio
+    // 1. Criar o PDF com jsPDF
+    const doc = new jsPDF();
+
+    doc.setFontSize(16);
+    doc.text("Carta de Apresentação", 20, 20);
+    doc.setFontSize(12);
+    doc.text("Esta é a carta de apresentação do Orientador e do Projeto de Iniciação Científica.", 20, 40);
+
+    // Gerar blob do PDF
+    const pdfBlob = doc.output("blob");
+
+    // 2. Criar FormData para envio
+    const formData = new FormData();
+    formData.append("arquivo", pdfBlob, "CartaApresentacao.pdf");
+
+    try {
+      // 3. Enviar o FormData para backend via API
+      const response = await criarCartaApresIc(formData);
+
+      // 4. Opcional: baixar o PDF localmente no browser
+      const url = window.URL.createObjectURL(pdfBlob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "CartaApresentacao.pdf";
+      a.click();
+      window.URL.revokeObjectURL(url);
+
+      handleSubmit?.(response);
+      handleClose();
+    } catch (error) {
+      alert("Erro ao criar e enviar o PDF.");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (!show) return null;
@@ -21,10 +55,10 @@ const CartaApresentacao = ({ show, handleClose, handleSubmit }) => {
         <p>Deseja realmente criar a Carta apresentação do Orientador e do Projeto de Iniciação Científica?</p>
 
         <div className={style.buttonsContainer}>
-          <button className={style.button} onClick={onConfirmCancel}>
-            Sim
+          <button className={style.button} onClick={gerarEPDFEnviar} disabled={loading}>
+            {loading ? "Gerando e Enviando..." : "Sim"}
           </button>
-          <button className={style.button} onClick={handleClose}>
+          <button className={style.button} onClick={handleClose} disabled={loading}>
             Não
           </button>
         </div>

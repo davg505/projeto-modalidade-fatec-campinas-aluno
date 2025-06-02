@@ -1,48 +1,34 @@
 import { useEffect, useState } from 'react';
-import { AbasDasSolicitacoes, 
+import { AbasDasSolicitacoesEp, 
     BotaoTrapezio, 
     BotaoTrapezioPadrao, 
     MenuRetravel, 
     MenuRetravelModalidadesep
 } from '../../componetes';
-import { UseAppContext } from "../../hooks";
 import style from './EquivalenciaProfissional.module.css';
-import { buscarDadosEstagio} from '../../services/apiService';
+import { buscarDadosAluno } from '../../services/apiService';
 
 
 
 export const EquivalenciaProfissional = () => {
-    const [dadosEstagio, setEstagio] = useState(null);
-    const { carregarDadosEstagioDoTermo } = UseAppContext();
-    const [termoDeEstagio, setTermoDeEstagio] = useState("");
+    const [dadoModalidade, setDadoModalidade] = useState("");
     const [isMenuRetravelOpen, setIsMenuRetravelOpen] = useState(false);
     const [isMenuRetravelModalidadeOpen, setIsMenuRetravelModalidadeOpen] = useState(false);
 
 
             // Carrega dados do estágio
         useEffect(() => {
-            const carregarDadosEstagio = async () => {
+            const carregarDadosModalidade = async () => {
             try {
-                const dados1 = await buscarDadosEstagio();
-                console.log('✅ Dados estágio:', dados1);
-                setEstagio(dados1);
+                const dados = await buscarDadosAluno();
+                console.log('✅ Dados EP:', dados);
+                setDadoModalidade(dados);
             } catch (error) {
-                console.error('Erro ao carregar os dados do estágio:', error);
+                console.error('Erro ao carregar os dados da modalidade:', error);
             }
             };
-            carregarDadosEstagio();
+            carregarDadosModalidade();
         }, []);
-    useEffect(() => {
-        const carregarTermo = async () => {
-            try {
-                const termo = await carregarDadosEstagioDoTermo();
-                setTermoDeEstagio(termo);
-            } catch (error) {
-                console.error('Erro ao carregar termo de estágio:', error);
-            }
-        };
-        carregarTermo();
-    }, [carregarDadosEstagioDoTermo]);
 
     // Função para abrir o MenuRetravel e fechar o MenuRetravelModalidade
     const handleBotaoTrapezioPadraoClick = () => {
@@ -81,8 +67,8 @@ export const EquivalenciaProfissional = () => {
             <div className={style.Caixa}>
                 <h1 className={style.Title2}>Área Aluno: Modalidade E.Profissional</h1>
                 <div className={style.Caixa}>
-                    <h2 className={style.Title2}>Info - {termoDeEstagio}</h2>
-                    {termoDeEstagio !== "Sem Solicitação" && <AbasDasSolicitacoes />}
+                    <h2 className={style.Title2}>Info - {dadoModalidade.modalidade}</h2>
+                    {dadoModalidade.modalidade !== "Sem Modalidade" && <AbasDasSolicitacoesEp />}
                 </div>
             </div>
         </div>

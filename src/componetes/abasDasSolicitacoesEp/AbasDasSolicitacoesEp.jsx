@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import style from './AbasDasSolicitacoesIc.module.css';
+import style from './AbasDasSolicitacoesEp.module.css';
 import { buscarArquivos } from '../../services/apiService';
 
-export const AbasDasSolicitacoesIc = () => {
+export const AbasDasSolicitacoesEp = () => {
   const [abaAtiva, setAbaAtiva] = useState(null);
   const [buscarArquivo, setBuscarArquivo] = useState("");
 
@@ -31,13 +31,16 @@ export const AbasDasSolicitacoesIc = () => {
         <h2>Dados - Documentação</h2>
       </div>
 
-      <h2>Documentação: Carta Apresentação</h2>
+      <h2>Documentação: Carta descrição atividades de trabalho</h2>
       <h3>Arquivo: </h3>
       <h3>Download: </h3>
-      <h2>Documentação: Carta Avaliação </h2>
+      <h2>Documentação: Comprovação vínculo trabalho </h2>
       <h3>Arquivo: </h3>
       <h3>Download: </h3>
-      <h2>Documentação: Relatório Final </h2>
+      <h2>Documentação: Relatórios </h2>
+      <h3>Arquivo: </h3>
+      <h3>Download: </h3>
+      <h2>Documentação: Requerimento de equivalências </h2>
       <h3>Arquivo: </h3>
       <h3>Download: </h3>
 

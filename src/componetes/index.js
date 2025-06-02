@@ -22,3 +22,9 @@ export * from './CartaApresentacaoic';
 export * from  './CartaAvaliacaoic';
 export * from './Relatoriosic';
 export * from './abasDasSolicitacoesIC';
+export * from './abasDasSolicitacoesEp';
+export * from './relatorioEp';
+export * from './solicitarEp';
+export * from './comprovacaoVinc';
+export * from './requerimentoEquiv';
+

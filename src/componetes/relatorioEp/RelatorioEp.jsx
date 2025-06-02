@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { relatorioFinal } from '../../services/apiService';
-import style from "./RelatorioIc.module.css";
+import { relatorioFinalEp } from '../../services/apiService';
+import style from "./RelatorioEp.module.css";
 
-const RelatorioIc = ({ show, handleClose, handleSubmit }) => {
+const RelatorioEp = ({ show, handleClose, handleSubmit }) => {
   const [step, setStep] = useState(1);
   const [file, setFile] = useState(null);
 
@@ -23,7 +23,7 @@ const RelatorioIc = ({ show, handleClose, handleSubmit }) => {
   }
 
   try {
-    const response = await relatorioFinal(file); // envia só o arquivo
+    const response = await relatorioFinalEp(file); // envia só o arquivo
     handleSubmit?.(response);
     handleClose();
   } catch (error) {
@@ -37,11 +37,11 @@ const RelatorioIc = ({ show, handleClose, handleSubmit }) => {
   return (
     <div className={style.modalBackground}>
       <div className={style.modalContainer}>
-        <h2>Relatório Final Iniciação Científica</h2>
+        <h2>Relatório Final E.Profissional</h2>
 
         {step === 1 && (
           <>
-            <p>Deseja enviar o relatório final iniciação científica?</p>
+            <p>Deseja enviar o relatório final E.Profissional?</p>
             <div className={style.buttonsContainer}>
               <button className={style.button} onClick={handleSimClick}>Sim</button>
               <button className={style.button} onClick={handleClose}>Não</button>
@@ -64,4 +64,4 @@ const RelatorioIc = ({ show, handleClose, handleSubmit }) => {
   );
 };
 
-export default RelatorioIc;
+export default RelatorioEp;
