@@ -1,10 +1,25 @@
-import { useState } from "react";
-import { comprovanteVincEp } from '../../services/apiService';
+import { useState,  useEffect } from "react";
+import { comprovanteVincEp, buscarDadosAluno } from '../../services/apiService';
 import style from "./ComprovacaoVinc.module.css";
 
 const ComprovacaoVinc = ({ show, handleClose, handleSubmit }) => {
   const [step, setStep] = useState(1);
   const [file, setFile] = useState(null);
+  const [dadosAlunos, setDadosAlunos] = useState(null);
+
+
+     useEffect(() => {
+            const carregarDadosAlunos = async () => {
+                try {
+                    const dados = await buscarDadosAluno();
+                    console.log('✅ Dados ep:', dados);  // VERIFICAR
+                    setDadosAlunos(dados);
+                } catch (error) {
+                    console.error('Erro ao carregar os dados do aluno:', error);
+                }
+            };
+            carregarDadosAlunos();
+        }, []);   
 
   const handleSimClick = () => {
     setStep(2); // Avança para a etapa de upload
@@ -22,8 +37,13 @@ const ComprovacaoVinc = ({ show, handleClose, handleSubmit }) => {
     return;
   }
 
+     const formData = new FormData();
+      formData.append('arquivo', file);
+      formData.append("idAluno", dadosAlunos.id);
+
   try {
-    const response = await comprovanteVincEp(file); // envia só o arquivo
+  
+    const response = await comprovanteVincEp(formData); // envia só o arquivo
     handleSubmit?.(response);
     handleClose();
   } catch (error) {
@@ -37,7 +57,7 @@ const ComprovacaoVinc = ({ show, handleClose, handleSubmit }) => {
   return (
     <div className={style.modalBackground}>
       <div className={style.modalContainer}>
-        <h2>Comprovação vínculo trabalho E.Profissional</h2>
+        <h3>Comprovação vínculo trabalho E.Profissional</h3>
 
         {step === 1 && (
           <>

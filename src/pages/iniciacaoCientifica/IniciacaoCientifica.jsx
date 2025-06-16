@@ -13,20 +13,23 @@ import { buscarDadosAluno } from '../../services/apiService';
 
 export const IniciacaoCientifica = () => {
     const [termoDeEstagio, setTermoDeEstagio] = useState("");
+     const [dadoModalidade, setDadoModalidade] = useState("");
     const [isMenuRetravelOpen, setIsMenuRetravelOpen] = useState(false);
     const [isMenuRetravelModalidadeOpen, setIsMenuRetravelModalidadeOpen] = useState(false);
 
-    useEffect(() => {
-        const carregarTermo = async () => {
+         // Carrega dados do estágio
+        useEffect(() => {
+            const carregarDadosModalidade = async () => {
             try {
-                const termo = await buscarDadosAluno();
-                setTermoDeEstagio(termo);
+                const dados = await buscarDadosAluno();
+                console.log('✅ Dados EP:', dados);
+                setDadoModalidade(dados);
             } catch (error) {
-                console.error('Erro ao carregar modalidade:', error);
+                console.error('Erro ao carregar os dados da modalidade:', error);
             }
-        };
-        carregarTermo();
-    }, );
+            };
+            carregarDadosModalidade();
+        }, []);
 
     // Função para abrir o MenuRetravel e fechar o MenuRetravelModalidade
     const handleBotaoTrapezioPadraoClick = () => {
@@ -65,8 +68,8 @@ export const IniciacaoCientifica = () => {
             <div className={style.Caixa}>
                 <h1 className={style.Title2}>Área Aluno: Modalidade I.Cientifica</h1>
                 <div className={style.Caixa}>
-                    <h2 className={style.Title2}>Info - {termoDeEstagio.modalidade}</h2>
-                    {termoDeEstagio.modalidade !== "Sem Modalidade" && <AbasDasSolicitacoesIc />}
+                    <h2 className={style.Title2}>Info - {dadoModalidade.modalidade}</h2>
+                    {dadoModalidade.modalidade !== "Sem Modalidade" && <AbasDasSolicitacoesIc />}
                 </div>
             </div>
         </div>

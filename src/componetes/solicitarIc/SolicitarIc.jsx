@@ -38,7 +38,7 @@ const SolicitarIc = ({ show, handleClose, handleSubmit }) => {
   return (
     <div className={style.modalBackground}>
       <div className={style.modalContainer}>
-        <h2>Solicitar I. Cientifico</h2>
+        <h3>Solicitar I. Cientifico</h3>
 
         <div className={style.labelContainer}>
           <label>Data inicio IC:</label>

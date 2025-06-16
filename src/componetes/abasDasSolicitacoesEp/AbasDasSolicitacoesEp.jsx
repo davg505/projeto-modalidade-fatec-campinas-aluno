@@ -32,7 +32,7 @@ export const AbasDasSolicitacoesEp = () => {
       
       </div>
      <h3>Carta Atividade: {buscarArquivo.cartadescricaoatividades_existe} </h3>
-     <h3>Comprovate: {buscarArquivo.comprovacaovinc_existe} </h3>
+     <h3>Comprovante: {buscarArquivo.comprovacaovinc_existe} </h3>
      <h3>Relatorio: {buscarArquivo.relatorioep_existe} </h3>
      <h3>Requerimento: {buscarArquivo.requerimentoequiv_existe}</h3>
     

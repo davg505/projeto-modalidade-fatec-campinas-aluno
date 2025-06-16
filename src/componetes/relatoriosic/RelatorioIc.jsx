@@ -1,10 +1,24 @@
-import { useState } from "react";
-import { relatorioFinal } from '../../services/apiService';
+import { useState,  useEffect } from "react";
+import { relatorioFinal, buscarDadosAluno } from '../../services/apiService';
 import style from "./RelatorioIc.module.css";
 
 const RelatorioIc = ({ show, handleClose, handleSubmit }) => {
   const [step, setStep] = useState(1);
   const [file, setFile] = useState(null);
+  const [dadosAlunos, setDadosAlunos] = useState(null);
+
+
+  useEffect(() => {
+        const carregarDadosAluno = async () => {
+          try {
+            const dados = await buscarDadosAluno();
+            setDadosAlunos(dados);
+          } catch (error) {
+            console.error("Erro ao carregar os dados do aluno:", error);
+          }
+        };
+        carregarDadosAluno();
+      }, []);
 
   const handleSimClick = () => {
     setStep(2); // Avança para a etapa de upload
@@ -22,8 +36,12 @@ const RelatorioIc = ({ show, handleClose, handleSubmit }) => {
     return;
   }
 
+  const formData = new FormData();
+          formData.append('arquivo', file);
+          formData.append("idAluno", dadosAlunos.id);
+
   try {
-    const response = await relatorioFinal(file); // envia só o arquivo
+    const response = await relatorioFinal(formData); // envia só o arquivo
     handleSubmit?.(response);
     handleClose();
   } catch (error) {
@@ -37,7 +55,7 @@ const RelatorioIc = ({ show, handleClose, handleSubmit }) => {
   return (
     <div className={style.modalBackground}>
       <div className={style.modalContainer}>
-        <h2>Relatório Final Iniciação Científica</h2>
+        <h3>Relatório Final Iniciação Científica</h3>
 
         {step === 1 && (
           <>

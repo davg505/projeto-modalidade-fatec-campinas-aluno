@@ -247,11 +247,8 @@ apiService.interceptors.request.use((config) => {
       }
       };
 
-      export const relatorioFinal = async (file) => {
+      export const relatorioFinal = async (formData) => {
         try {
-          const formData = new FormData();
-          formData.append('arquivo', file);
-
           // Cria axios separado SEM Content-Type JSON, para o upload de arquivo
           const uploadResponse = await axios.post('https://backend-fatec.onrender.com/api/relatorioIC', formData, {
             headers: {
@@ -317,6 +314,18 @@ apiService.interceptors.request.use((config) => {
           }
         };
 
+
+          export const buscarDadosrelatoriosic = async () => {
+        try {
+          const response = await apiService.get('/relatoriosxic');
+          return response.data; // Isso será o aluno retornado do back-end
+        } catch (error) {
+          console.error('Erro ao buscar dados do aluno:', error);
+          throw error;
+        }
+      };
+
+
 //ep 
 
         // Solicitação iniciar I cientifica -fazer
@@ -372,10 +381,9 @@ apiService.interceptors.request.use((config) => {
       };
 
 
-      export const relatorioFinalEp = async (file) => {
+      export const relatorioFinalEp = async (formData) => {
         try {
-          const formData = new FormData();
-          formData.append('arquivo', file);
+
 
           // Cria axios separado SEM Content-Type JSON, para o upload de arquivo
           const uploadResponse = await axios.post('https://backend-fatec.onrender.com/api/relatorioEP', formData, {
@@ -392,11 +400,8 @@ apiService.interceptors.request.use((config) => {
         }
       };
 
-      export const comprovanteVincEp = async (file) => {
+      export const comprovanteVincEp = async (formData) => {
         try {
-          const formData = new FormData();
-          formData.append('arquivo', file);
-
           // Cria axios separado SEM Content-Type JSON, para o upload de arquivo
           const uploadResponse = await axios.post('https://backend-fatec.onrender.com/api/comprovanteVinculEP', formData, {
             headers: {
@@ -477,6 +482,8 @@ apiService.interceptors.request.use((config) => {
           throw error;
         }
       };
+
+      
 
 
 

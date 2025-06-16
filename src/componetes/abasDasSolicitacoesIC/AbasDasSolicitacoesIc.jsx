@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import style from './AbasDasSolicitacoesIc.module.css';
-import { buscarArquivos } from '../../services/apiService';
+import {buscarDadosrelatoriosic } from '../../services/apiService';
 
 export const AbasDasSolicitacoesIc = () => {
   const [abaAtiva, setAbaAtiva] = useState(null);
@@ -13,8 +13,8 @@ export const AbasDasSolicitacoesIc = () => {
    useEffect(() => {
       const carregarArquivo = async () => {
         try {
-          const arquivos = await buscarArquivos(); // retorna array
-          setBuscarArquivo(arquivos[0]); // pega o primeiro por enquanto
+          const arquivos = await buscarDadosrelatoriosic(); // retorna array
+          setBuscarArquivo(arquivos); // pega o primeiro por enquanto
         } catch (error) {
           console.error('Erro ao carregar arquivo:', error);
         }
@@ -22,25 +22,19 @@ export const AbasDasSolicitacoesIc = () => {
       carregarArquivo();
     }, []);
 
-  return (
+ return (
     <div className={style.AbasContainer}>
       <div
-        className={abaAtiva === 'Pedidos de solicitações' ? style.AbaAtiva : style.Aba}
-        onClick={() => handleAbaClick('Pedidos de solicitações')}
+      //  className={abaAtiva === 'Pedidos de solicitações' ? style.AbaAtiva : style.Aba}
+    //    onClick={() => handleAbaClick('Pedidos de solicitações')}
       >
-        <h2>Dados - Documentação</h2>
+
+      
       </div>
-
-      <h2>Documentação: Carta Apresentação</h2>
-      <h3>Arquivo: </h3>
-      <h3>Download: </h3>
-      <h2>Documentação: Carta Avaliação </h2>
-      <h3>Arquivo: </h3>
-      <h3>Download: </h3>
-      <h2>Documentação: Relatório Final </h2>
-      <h3>Arquivo: </h3>
-      <h3>Download: </h3>
-
+     <h3>Carta apresentação: {buscarArquivo.carta_apresentacao_existe} </h3>
+     <h3>Carta avaliação: {buscarArquivo.carta_avaliacao_existe} </h3>
+     <h3>Relatorio: {buscarArquivo.relatorio_existe} </h3>
     </div>
   );
 };
+
