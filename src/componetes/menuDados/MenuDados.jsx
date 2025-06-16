@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { buscarDadosAluno, buscarDadosEstagio, buscarDadosEmpresa, atualizarDadosRepresentante, atualizarDadosAlunos } from '../../services/apiService';
+import { buscarDadosAluno, buscarDadosEstagio, buscarDadosEmpresa, atualizarDadosRepresentante, atualizarDadosAlunos, buscarDadosep, buscarDadosic } from '../../services/apiService';
 import style from './MenuDados.module.css';
 
 export const MenuDados = () => { 
@@ -8,6 +8,8 @@ export const MenuDados = () => {
     const [aluno, setAluno] = useState(null);
     const [dadosEstagio, setEstagio] = useState(null);
     const [dadosEmpresa, setEmpresa] = useState(null);
+    const [dadosEp, setDadosEp] = useState(null);
+    const [dadosIc, setDadosIc] = useState(null);
 
 
     // Carrega opções do menu
@@ -15,23 +17,86 @@ export const MenuDados = () => {
         setListaMeusDados([
             { id: 1, nomeColuna: 'Meus Dados' },
             { id: 2, nomeColuna: 'Dados do Estágio' },
-            { id: 3, nomeColuna: 'Dados da Empresa' }
+            { id: 3, nomeColuna: 'Dados da Empresa' },
+            { id: 4, nomeColuna: 'Dados do I. Cientifica' },
+            { id: 5, nomeColuna: 'Dados do E. Profissional'},
+            { id: 6, nomeColuna: 'Sem modalidade' }
         ]);
     }, []);
 
-    // Carrega dados do aluno
+
+     // Carrega dados do estágio
     useEffect(() => {
-        const carregarDadosAluno = async () => {
+        const carregarDadosep = async () => {
             try {
-                const dados = await buscarDadosAluno();
-                console.log('✅ Dados aluno:', dados);  // VERIFICAR
-                setAluno(dados);
+                const dados1 = await buscarDadosep();
+                console.log('✅ Dados ep:', dados1);  // VERIFICAR
+                setDadosEp(dados1);
             } catch (error) {
-                console.error('Erro ao carregar o perfil do aluno:', error);
+                console.error('Erro ao carregar os dados do ep:', error);
             }
         };
-        carregarDadosAluno();
+        carregarDadosep();
     }, []);
+
+    useEffect(() => {
+        const carregarDadosic = async () => {
+            try {
+                const dados1 = await buscarDadosic();
+                console.log('✅ Dados ep:', dados1);  // VERIFICAR
+                setDadosIc(dados1);
+            } catch (error) {
+                console.error('Erro ao carregar os dados do ep:', error);
+            }
+        };
+        carregarDadosic();
+    }, []);
+
+
+
+    // Carrega dados do aluno
+    useEffect(() => {
+    const carregarDadosAluno = async () => {
+        try {
+            const dados = await buscarDadosAluno();
+            console.log('✅ Dados aluno:', dados);  // VERIFICAR
+            setAluno(dados);
+
+            // Define o menu com base na modalidade
+            if (dados.modalidade === 'Estagio') {
+                setListaMeusDados([
+                    { id: 1, nomeColuna: 'Meus Dados' },
+                    { id: 2, nomeColuna: 'Dados do Estágio' },
+                    { id: 3, nomeColuna: 'Dados da Empresa' },
+                ]);
+            } else if (dados.modalidade === 'Sem Modalidade') {
+                setListaMeusDados([
+                    { id: 1, nomeColuna: 'Meus Dados' },
+                    { id: 6, nomeColuna: 'Sem modalidade' },
+                ]);
+            } else if (dados.modalidade === 'E. Profissional') {
+                setListaMeusDados([
+                    { id: 1, nomeColuna: 'Meus Dados' },
+                    { id: 5, nomeColuna: 'Dados do E. Profissional' },
+                ]);
+            } else if (dados.modalidade === 'I. Cientifica') {
+                setListaMeusDados([
+                    { id: 4, nomeColuna: 'Dados do I. Cientifica' },
+                    { id: 1, nomeColuna: 'Meus Dados' },
+                ]);
+            } else {
+                // Modalidade não conhecida – fallback
+                setListaMeusDados([
+                    { id: 1, nomeColuna: 'Meus Dados' },
+                ]);
+            }
+
+        } catch (error) {
+            console.error('Erro ao carregar o perfil do aluno:', error);
+        }
+    };
+    carregarDadosAluno();
+}, []);
 
     // Carrega dados do estágio
     useEffect(() => {
@@ -301,6 +366,73 @@ export const MenuDados = () => {
                             )}
                         </>
                         )}
+
+                     {/* Dados do estágio */}
+                    {selectedId === 4 && dadosIc && (
+                        <>
+                         <p> Dados do I. Cientifica</p>
+                         
+                            {[
+                                  ["Instituição / Centro de Pesquisa", dadosIc.instituicao_centro_pesquisa],
+                                    ["Tema", dadosIc.tema],
+                                    ["Data Inicial", dadosIc.data_inicial],
+                                    ["Data Final", dadosIc.data_final],
+                                    ["Orientador", dadosIc.orientador],
+                                    ["Horário", dadosIc.horario],
+                                    ["Dias da Semana", dadosIc.dias_da_semana],
+                               
+                                 ].map(([label, value], i) => (
+                                <div key={i} className={style.dadosItem}>
+                                    <p><strong>{label}:</strong></p>
+                                    <p>{value}</p>
+                                </div>
+                            ))}
+                        </>
+                    )}
+
+
+                    
+                     {/* Dados do estágio */}
+                    {selectedId === 5 && dadosEp && (
+                        <>
+                         <p> Dados do E. Profissional</p>
+                         
+                            {[
+                                ["Município da Empresa", dadosEp.municipio_empresa],
+                                ["Superior Imediato", dadosEp.superior_imediato],
+                                ["Telefone", dadosEp.tel],
+                                ["Email", dadosEp.email],
+                                ["Área de Atuação", dadosEp.area_atuacao],
+                                ["Data de Início de Atuação", dadosEp.data_incio_atuacao],
+                              
+                                 ].map(([label, value], i) => (
+                                <div key={i} className={style.dadosItem}>
+                                    <p><strong>{label}:</strong></p>
+                                    <p>{value}</p>
+                                </div>
+                            ))}
+                        </>
+                    )}
+
+
+                    
+                     {/* Sem modalidade */}
+                    {selectedId === 6 && aluno && (
+                        <>
+                         <p> Dados da modalidades</p>
+                         
+                            {[
+                                 ["Modalidade", aluno.modalidade],
+                                 ].map(([label, value], i) => (
+                                <div key={i} className={style.dadosItem}>
+                                    <p><strong>{label}:</strong></p>
+                                    <p>{value}</p>
+                                </div>
+                            ))}
+                        </>
+                    )}
+
+
                 </div>
             )}
         </div>

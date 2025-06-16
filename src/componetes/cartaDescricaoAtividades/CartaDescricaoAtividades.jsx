@@ -1,10 +1,43 @@
-import { useState } from "react"; 
-import { criarCartaApresEp } from '../../services/apiService';
+import { useState, useEffect } from "react"; 
+import { criarCartaApresEp, buscarDadosep, buscarDadosAluno } from '../../services/apiService';
 import { jsPDF } from "jspdf";
 import style from "./CartaDescricaoAtividades.module.css";
 
 const CartaDescricaoAtividades = ({ show, handleClose, handleSubmit }) => {
   const [loading, setLoading] = useState(false);
+  const [dadosEp, setDadosEp] = useState(null);
+  const [dadosAlunos, setDadosAlunos] = useState(null);
+
+
+   useEffect(() => {
+          const carregarDadosep = async () => {
+              try {
+                  const dados1 = await buscarDadosep();
+                  console.log('✅ Dados ep:', dados1);  // VERIFICAR
+                  setDadosEp(dados1);
+              } catch (error) {
+                  console.error('Erro ao carregar os dados do ep:', error);
+              }
+          };
+          carregarDadosep();
+      }, []);
+
+
+   useEffect(() => {
+          const carregarDadosAlunos = async () => {
+              try {
+                  const dados = await buscarDadosAluno();
+                  console.log('✅ Dados ep:', dados);  // VERIFICAR
+                  setDadosAlunos(dados);
+              } catch (error) {
+                  console.error('Erro ao carregar os dados do aluno:', error);
+              }
+          };
+          carregarDadosAlunos();
+      }, []);   
+
+
+
 
   const gerarEPDFEnviar = async () => {
     setLoading(true);
@@ -12,17 +45,53 @@ const CartaDescricaoAtividades = ({ show, handleClose, handleSubmit }) => {
     // 1. Criar o PDF com jsPDF
     const doc = new jsPDF();
 
-    doc.setFontSize(16);
-    doc.text("Carta descrição atividades de trabalho", 20, 20);
-    doc.setFontSize(12);
-    doc.text("Esta é a Carta descrição atividades de trabalho e E. Profissional.", 20, 40);
+    const margemX = 20;
+  let y = 20;
+
+  doc.setFontSize(16);
+  doc.text("Carta de Descrição das Atividades de Trabalho", margemX, y);
+  y += 10;
+
+  doc.setFontSize(12);
+  doc.text(`Aluno: ${dadosAlunos.nome_do_aluno}`, margemX, y);
+  y += 7;
+  doc.text(`RA: ${dadosAlunos.ra}`, margemX, y);
+  y += 7;
+  doc.text(`Curso: ${dadosAlunos.curso}`, margemX, y);
+  y += 7;
+  doc.text(`Modalidade: ${dadosAlunos.modalidade}`, margemX, y);
+  y += 10;
+
+  doc.text(`Empresa: ${dadosEp.nome_da_empresa}`, margemX, y);
+  y += 7;
+  doc.text(`Município: ${dadosEp.municipio_empresa}`, margemX, y);
+  y += 7;
+  doc.text(`Supervisor: ${dadosEp.superior_imediato}`, margemX, y);
+  y += 7;
+  doc.text(`Telefone: ${dadosEp.tel}`, margemX, y);
+  y += 7;
+  doc.text(`Email da empresa: ${dadosEp.email}`, margemX, y);
+  y += 7;
+  doc.text(`Área de Atuação: ${dadosEp.area_atuacao}`, margemX, y);
+  y += 7;
+  doc.text(`Data de Início: ${new Date(dadosEp.data_incio_atuacao).toLocaleDateString()}`, margemX, y);
+  y += 10;
+
+  doc.setFont("helvetica", "bold");
+  doc.text("Descrição das Atividades:", margemX, y);
+  y += 8;
+  doc.setFont("helvetica", "normal");
+
+  const descricao = doc.splitTextToSize(dadosEp.descricao_atividade, 170);
+  doc.text(descricao, margemX, y);
 
     // Gerar blob do PDF
     const pdfBlob = doc.output("blob");
 
     // 2. Criar FormData para envio
     const formData = new FormData();
-    formData.append("arquivo", pdfBlob, "cartadescriçãoatividadesdetrabalho.pdf");
+    formData.append("arquivo", pdfBlob, `cartadescricaoatividadesdetrabalho-${dadosAlunos.ra}.pdf`);
+    formData.append("idAluno", dadosAlunos.id);  // <-- adiciona o ID do aluno
 
     try {
       // 3. Enviar o FormData para backend via API
@@ -32,7 +101,7 @@ const CartaDescricaoAtividades = ({ show, handleClose, handleSubmit }) => {
       const url = window.URL.createObjectURL(pdfBlob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "cartadescriçãoatividadesdetrabalho.pdf";
+      a.download = `cartadescriçãoatividadesdetrabalho-${dadosAlunos.ra}.pdf`;
       a.click();
       window.URL.revokeObjectURL(url);
 
@@ -51,7 +120,7 @@ const CartaDescricaoAtividades = ({ show, handleClose, handleSubmit }) => {
   return (
     <div className={style.modalBackground}>
       <div className={style.modalContainer}>
-        <h2>Carta apresentação E. Profissional</h2>
+        <h3>Carta apresentação E. Profissional</h3>
         <p>Deseja realmente criar a Carta descrição atividades de trabalho?</p>
 
         <div className={style.buttonsContainer}>

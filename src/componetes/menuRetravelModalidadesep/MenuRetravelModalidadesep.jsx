@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import { UseAppContext } from "../../hooks";
-import { Api } from '../../services/Api';
 import { Icone } from "../icone";
 import SolicitarEp from "../solicitarEp/SolicitarEp";
 import CancelarEp from "../cancelarEp/CancelarEp";
@@ -11,7 +10,7 @@ import CartaDescricaoAtividades from "../cartaDescricaoAtividades/CartaDescricao
 
 import style from './MenuRetravelModalidadesep.module.css';
 import { TitulosIcones } from "./titulosIcones";
-import {buscarDadosAluno} from '../../services/apiService';
+import {buscarDadosAluno, buscarDadosrelatoriosep} from '../../services/apiService';
 
 // eslint-disable-next-line react/prop-types
 export const MenuRetravelModalidadesep = () => {
@@ -22,26 +21,67 @@ export const MenuRetravelModalidadesep = () => {
     const [showRelatorioEp, setShowRelatorioEp] = useState(false);
     const [showComprovacaoVinc, setShowComprovacaoVinc] = useState(false);
     const [showCartaDescricaoAtividades, setShowCartaDescricaoAtividades] = useState(false);
+     const [dadosEp, setDadosEp] = useState(null);
+
+
+    useEffect(() => {
+              const carregarDadosep = async () => {
+                  try {
+                      const dados1 = await buscarDadosrelatoriosep();
+                      console.log('✅ Dados ep:', dados1);  // VERIFICAR
+                      setDadosEp(dados1);
+                  } catch (error) {
+                      console.error('Erro ao carregar os dados do ep:', error);
+                  }
+              };
+              carregarDadosep();
+          }, []);
 
   
+
+    const handleOpenSolicitarEstagio = async () => {
+         try {
+        const aluno = await buscarDadosAluno();
+
+        if (!aluno) {
+            alert('Dados do aluno não encontrados.');
+            return;
+        }
+
+        const modalidade = aluno.modalidade;
+
+        if (modalidade === 'Estagio') {
+            alert('Você já está na modalidade Estágio.');
+            return;
+        }
+
+        if (modalidade === 'E. Profissional') {
+            alert('Você já está na modalidade E. Profissional.');
+            return;
+        }
+
+        if (modalidade === 'I. Cientifica') {
+            alert('Você já está na modalidade I. Cientifica.');
+            return;
+        }
+
+        if (modalidade === 'Sem Modalidade') {
+            setShowSolicitarEp(true); // libera processo
+            return;
+        }
+
+        // Caso a modalidade não seja reconhecida:
+        alert(`Modalidade "${modalidade}" não reconhecida.`);
+    } catch (error) {
+        console.error('Erro ao verificar o status do aluno:', error);
+        alert('Erro ao verificar os dados do aluno.');
+    }
+};
 
     const iconesInicio = iconesEp.filter(item => item.id === 1 || item.id === 3);
     const iconesDurante = iconesEp.filter(item => item.id === 4 || item.id === 5 || item.id === 6 || item.id === 7);
 
-    const handleOpenSolicitarEstagio = async () => {
-        try {
-            const { data } = await Api.get('/aluno');
-            const aluno = data[0]; 
-            if (aluno.status === 'Sem solicitação' || aluno.status === 'Cancelado Solicitação') {
-                setShowSolicitarEp(true); 
-            } else {
-                alert(`A solicitação não pode ser feita. Status atual: ${aluno.status}`);
-            }
-        } catch (error) {
-            console.error('Erro ao verificar o status do aluno:', error);
-        }
-    };
-
+   
     const handleCloseSolicitarEstagio = () => {
         setShowSolicitarEp(false); 
         setShowCancelar(false);// Fecha a janela
@@ -59,6 +99,8 @@ export const MenuRetravelModalidadesep = () => {
         setShowComprovacaoVinc(false);
         setShowCartaDescricaoAtividades(false);
     };
+
+
 
 
 
@@ -178,7 +220,7 @@ export const MenuRetravelModalidadesep = () => {
                                 return;
                             }
                     
-                        if (aluno.modalidade === 'E. Profissional' ) {
+                        if (aluno.modalidade === 'E. Profissional') {
                             setShowCartaDescricaoAtividades(true); 
                         } else {
                             alert(`A solicitação não pode ser feita. Status atual: ${aluno.modalidade}`);
@@ -195,10 +237,10 @@ export const MenuRetravelModalidadesep = () => {
     const actions = {
         1: handleOpenSolicitarEstagio,
         3: handleOpenCancelarEp,
-        4: handleOpenRequerimentoEquiv,
-        5: handleOpenRelatorioEp,
-        6: handleOpenComprovacaoVinc,
-        7: handleOpenCartaDescricaoAtividades,
+        7: handleOpenRequerimentoEquiv,
+        6: handleOpenRelatorioEp,
+        5: handleOpenComprovacaoVinc,
+        4: handleOpenCartaDescricaoAtividades,
     };
 
     const handleClick = (id) => {

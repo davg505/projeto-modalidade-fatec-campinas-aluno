@@ -20,7 +20,7 @@ const onConfirmCancel = async () => {
   return (
     <div className={style.modalBackground}>
       <div className={style.modalContainer}>
-        <h2>Cancelar E. Profissional</h2>
+        <h3>Cancelar E. Profissional</h3>
         <p>Deseja realmente cancelar a solicitação de E. Profissional?</p>
 
         <div className={style.buttonsContainer}>

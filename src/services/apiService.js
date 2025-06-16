@@ -2,8 +2,8 @@ import axios from 'axios';
 
 // Configuração base da API, adaptada ao seu back-end (ajuste a URL conforme necessário)
 const apiService = axios.create({
-  //baseURL: 'http://localhost:3001/api',  // Endereço do back-end
-  baseURL: 'https://backend-fatec.onrender.com/api',
+  baseURL: 'http://localhost:3001/api',  // Endereço do back-end
+ // baseURL: 'https://backend-fatec.onrender.com/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -283,19 +283,24 @@ apiService.interceptors.request.use((config) => {
         }
       };
 
-      export const criarCartaApresIc = async (formData) => {
-          try {
-            const response = await axios.post('https://backend-fatec.onrender.com/api/relatorioCartaApresIC', formData, {
+    export const criarCartaApresIc = async (formData) => {
+        try {
+          const response = await axios.post(
+            'https://backend-fatec.onrender.com/api/relatorioCartaApresIC',
+            formData,
+            {
+              // NÃO defina manualmente Content-Type para multipart/form-data, o Axios faz isso automaticamente
               headers: {
-                // NÃO defina manualmente Content-Type para multipart/form-data, o Axios faz isso automaticamente
+                // Se precisar de headers extras, coloque aqui
               },
-            });
-            return response.data;
-          } catch (error) {
-            console.error('Erro ao enviar carta apresentação:', error);
-            throw error;
-          }
-        };
+            }
+          );
+          return response.data;
+        } catch (error) {
+          console.error('Erro ao enviar carta apresentação:', error);
+          throw error;
+        }
+      };
 
 
         export const criarCartaAvalIc = async (formData) => {
@@ -342,7 +347,7 @@ apiService.interceptors.request.use((config) => {
       tel: dados.tel,
       email: dados.email,
       area_atuacao: dados.area_atuacao,
-      data_incio_atuacao: data_incio_atuacao,
+      data_incio_atuacao: dados.data_incio_atuacao,
       descricao_atividade: dados.descricao_atividade || '',
     });
 
@@ -410,6 +415,8 @@ apiService.interceptors.request.use((config) => {
 
       export const criarCartaApresEp = async (formData) => {
           try {
+
+            //const response = await apiService.post('/relatorioCartaApresEp', formData, {
             const response = await axios.post('https://backend-fatec.onrender.com/api/relatorioCartaApresEp', formData, {
               headers: {
                 // NÃO defina manualmente Content-Type para multipart/form-data, o Axios faz isso automaticamente
@@ -436,7 +443,47 @@ apiService.interceptors.request.use((config) => {
           }
         };
 
-       
+
+        //busca os dados do aluno 
+      export const buscarDadosep = async () => {
+        try {
+          const response = await apiService.get('/ep');
+          return response.data; // Isso será o aluno retornado do back-end
+        } catch (error) {
+          console.error('Erro ao buscar dados do aluno:', error);
+          throw error;
+        }
+      };
+
+
+       //busca os dados do aluno 
+      export const buscarDadosic = async () => {
+        try {
+          const response = await apiService.get('/ic');
+          return response.data; // Isso será o aluno retornado do back-end
+        } catch (error) {
+          console.error('Erro ao buscar dados do aluno:', error);
+          throw error;
+        }
+      };
+
+
+      export const buscarDadosrelatoriosep = async () => {
+        try {
+          const response = await apiService.get('/relatoriosep');
+          return response.data; // Isso será o aluno retornado do back-end
+        } catch (error) {
+          console.error('Erro ao buscar dados do aluno:', error);
+          throw error;
+        }
+      };
+
+
+
+  
+          
+
+          
 
 
 
