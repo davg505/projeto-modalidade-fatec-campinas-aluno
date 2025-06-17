@@ -2,8 +2,8 @@ import axios from 'axios';
 
 // Configuração base da API, adaptada ao seu back-end (ajuste a URL conforme necessário)
 const apiService = axios.create({
-  baseURL: 'http://localhost:3001/api',  // Endereço do back-end
- // baseURL: 'https://backend-fatec.onrender.com/api',
+  //baseURL: 'http://localhost:3001/api',  // Endereço do back-end
+  baseURL: 'https://backend-fatec.onrender.com/api',
   headers: {
     'Content-Type': 'application/json',
   },
